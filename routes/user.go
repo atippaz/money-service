@@ -8,5 +8,5 @@ import (
 
 func UserRoute(app fiber.Router, controllers controllers.IUserContoller) {
 	api := app.Group("/users")
-	api.Get("/:id", controllers.GetUserById(""))
+	api.Get("/:id", controllers.GetUserById())
 }
