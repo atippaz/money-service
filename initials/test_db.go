@@ -15,7 +15,7 @@ func initSpendingTypeForTest(app fiber.Router, db config.DummySpendingInstance) 
 	spendingRepo := repositories.SpendingTypeRepositoryTest(db)
 	spendingService := services.SpendingTypeService(spendingRepo)
 	spendingController := controllers.SpendingTypeContoller(spendingService)
-	routes.SpendingTypeController(app, spendingController)
+	routes.SpendingTypeRoute(app, spendingController)
 }
 func InitialTest(app fiber.Router, db config.DummySpendingInstance) {
 	initSpendingTypeForTest(app, db)

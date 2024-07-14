@@ -12,7 +12,7 @@ type userRepositoryGorm struct {
 	db *gorm.DB
 }
 
-func SpendingTypeRepositoryGorm(db *gorm.DB) IUserRepository {
+func UserRepositoryGorm(db *gorm.DB) IUserRepository {
 	return &userRepositoryGorm{db: db}
 }
 
