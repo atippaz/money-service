@@ -7,7 +7,7 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
-func UserRoute(app fiber.Router, controllers controllers.IUserController) {
+func ExpenseRoute(app fiber.Router, controllers controllers.IExpenseController) {
 	fmt.Print("route ")
 	api := app.Group("/users")
 	api.Get("/:id", controllers.GetUserById())

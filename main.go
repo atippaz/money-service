@@ -9,8 +9,9 @@ func main() {
 	db_gorm := Config.ConnectGormDb()
 	// db_test := Config.ConnectTestDB()
 	app := Config.GetInstanceServer()
+	initials.InitialGorm(db_gorm)
 	// initSpendingTypeForTest(app, db_test)
-	initials.InitialGorm(app, db_gorm)
+	initials.InitApplication(app)
 
 	Config.StartServer()
 }

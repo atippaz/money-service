@@ -7,18 +7,18 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
-type IUserController interface {
-	GetUserById() fiber.Handler
+type IIncomeController interface {
+	GetIncomeById() fiber.Handler
 }
 
-type userController struct {
-	service *services.IUserService
+type incomeController struct {
+	service *services.IIncomeService
 }
 
-func UserController(service *services.IUserService) IUserController {
-	return userController{service}
+func IncomeController(service *services.IIncomeService) IIncomeController {
+	return incomeController{service}
 }
-func (s userController) GetUserById() fiber.Handler {
+func (s incomeController) GetIncomeById() fiber.Handler {
 	return func(c *fiber.Ctx) error {
 		id := c.Params("id")
 		res, err := s.service.GetUserById(id)

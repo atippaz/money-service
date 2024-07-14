@@ -7,8 +7,8 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
-func UserRoute(app fiber.Router, controllers controllers.IUserController) {
+func SystemTagRoute(app fiber.Router, controllers controllers.ISystemTagController) {
 	fmt.Print("route ")
 	api := app.Group("/users")
-	api.Get("/:id", controllers.GetUserById())
+	api.Get("/:id", controllers.GetSystemTagById())
 }

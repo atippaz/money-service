@@ -2,21 +2,13 @@ package initials
 
 import (
 	"money-service/config"
-	"money-service/controllers"
-	repositories "money-service/repositories/spending_type"
-	"money-service/routes"
-	"money-service/services"
-
-	"github.com/gofiber/fiber/v2"
 )
 
-func initSpendingTypeForTest(app fiber.Router, db config.DummySpendingInstance) {
-
-	spendingRepo := repositories.SpendingTypeRepositoryTest(db)
-	spendingService := services.SpendingTypeService(spendingRepo)
-	spendingController := controllers.SpendingTypeContoller(spendingService)
-	routes.SpendingTypeRoute(app, spendingController)
-}
-func InitialTest(app fiber.Router, db config.DummySpendingInstance) {
-	initSpendingTypeForTest(app, db)
+func InitialTest(db config.DummySpendingInstance) {
+	// spendingRepo = spendingType.SpendingTypeRepositoryGorm(db)
+	// userRepo = user.UserRepositoryGorm(db)
+	// expenseRepo = expense.ExpenseRepositoryGorm(db)
+	// incomeRepo = income.IncomeRepositoryGorm(db)
+	// system_tagRepo = system_tag.SystemTagRepositoryGorm(db)
+	// custom_tagRepo = custom_tag.CustomTagRepositoryGorm(db)
 }

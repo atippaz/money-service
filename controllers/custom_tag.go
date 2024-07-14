@@ -7,18 +7,18 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
-type IUserController interface {
-	GetUserById() fiber.Handler
+type ICustomTagController interface {
+	GetCustomTagById() fiber.Handler
 }
 
-type userController struct {
-	service *services.IUserService
+type customTagController struct {
+	service *services.ICustomTagService
 }
 
-func UserController(service *services.IUserService) IUserController {
-	return userController{service}
+func CustomTagController(service *services.ICustomTagService) ICustomTagController {
+	return customTagController{service}
 }
-func (s userController) GetUserById() fiber.Handler {
+func (s customTagController) GetCustomTagById() fiber.Handler {
 	return func(c *fiber.Ctx) error {
 		id := c.Params("id")
 		res, err := s.service.GetUserById(id)
