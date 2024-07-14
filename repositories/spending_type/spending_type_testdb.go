@@ -1,16 +1,16 @@
-package other_db
+package repositories
 
 import (
 	"fmt"
+	"money-service/config"
 	"money-service/interfaces"
-	"money-service/repositories"
 )
 
 type spendingRepositoryTest struct {
-	db DummySpendingInstance
+	db config.DummySpendingInstance
 }
 
-func SpendingTypeRepositoryTest(db DummySpendingInstance) repositories.ISpendingTypeRepository {
+func SpendingTypeRepositoryTest(db config.DummySpendingInstance) ISpendingTypeRepository {
 	return &spendingRepositoryTest{db: db}
 }
 

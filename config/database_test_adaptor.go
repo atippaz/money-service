@@ -1,4 +1,4 @@
-package other_db
+package config
 
 import (
 	"github.com/google/uuid"

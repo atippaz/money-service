@@ -3,8 +3,7 @@ package main
 import (
 	Config "money-service/config"
 	"money-service/controllers"
-	"money-service/gorm_repository"
-	"money-service/other_db"
+	repositories "money-service/repositories/spending_type"
 	"money-service/routes"
 	"money-service/services"
 
@@ -19,15 +18,15 @@ func main() {
 	initSpendingTypeForTest(app, db_test)
 	Config.StartServer()
 }
-func initSpendingTypeForTest(app fiber.Router, db other_db.DummySpendingInstance) {
+func initSpendingTypeForTest(app fiber.Router, db Config.DummySpendingInstance) {
 
-	spendingRepo := other_db.SpendingTypeRepositoryTest(db)
+	spendingRepo := repositories.SpendingTypeRepositoryTest(db)
 	spendingService := services.SpendingTypeService(spendingRepo)
 	spendingController := controllers.SpendingTypeContoller(spendingService)
 	routes.SpendingTypeController(app, spendingController)
 }
 func initSpendingTypeForGorm(app fiber.Router, db_gorm *gorm.DB) {
-	spendingRepo := gorm_repository.SpendingTypeRepositoryGorm(db_gorm)
+	spendingRepo := repositories.SpendingTypeRepositoryGorm(db_gorm)
 	spendingService := services.SpendingTypeService(spendingRepo)
 	spendingController := controllers.SpendingTypeContoller(spendingService)
 	routes.SpendingTypeController(app, spendingController)

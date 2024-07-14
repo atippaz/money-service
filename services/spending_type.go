@@ -2,7 +2,7 @@ package services
 
 import (
 	"money-service/interfaces"
-	"money-service/repositories"
+	repositories "money-service/repositories/spending_type"
 )
 
 type ISpendingTypeService struct {

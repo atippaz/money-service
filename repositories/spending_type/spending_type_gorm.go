@@ -1,10 +1,9 @@
-package gorm_repository
+package repositories
 
 import (
 	"fmt"
 	"money-service/entities"
 	"money-service/interfaces"
-	"money-service/repositories"
 
 	"gorm.io/gorm"
 )
@@ -13,7 +12,7 @@ type spendingRepositoryGorm struct {
 	db *gorm.DB
 }
 
-func SpendingTypeRepositoryGorm(db *gorm.DB) repositories.ISpendingTypeRepository {
+func SpendingTypeRepositoryGorm(db *gorm.DB) ISpendingTypeRepository {
 	return &spendingRepositoryGorm{db: db}
 }
 

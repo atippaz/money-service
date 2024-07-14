@@ -3,7 +3,6 @@ package config
 import (
 	"fmt"
 	"money-service/entities"
-	"money-service/other_db"
 
 	"gorm.io/driver/postgres"
 
@@ -23,6 +22,6 @@ func ConnectGormDb() *gorm.DB {
 	return Database
 }
 
-func ConnectTestDB() other_db.DummySpendingInstance {
-	return other_db.GetInstanceDb()
+func ConnectTestDB() DummySpendingInstance {
+	return GetInstanceDb()
 }
