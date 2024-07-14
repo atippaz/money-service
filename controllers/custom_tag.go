@@ -20,6 +20,8 @@ func CustomTagController(service *services.ICustomTagService) ICustomTagControll
 }
 func (s customTagController) GetCustomTagsByUser() fiber.Handler {
 	return func(c *fiber.Ctx) error {
+		user := c.Locals("user").(string)
+		fmt.Println(user)
 		id := c.Params("id")
 		res, err := s.service.GetCustomTagsByUser(id)
 		fmt.Print(res)
