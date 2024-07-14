@@ -3,7 +3,6 @@ package main
 import (
 	Config "money-service/config"
 	"money-service/controllers"
-	"money-service/databases"
 	"money-service/gorm_repository"
 	"money-service/other_db"
 	"money-service/routes"
@@ -15,7 +14,7 @@ import (
 
 func main() {
 	// db_gorm := databases.ConnectGormDb()
-	db_test := databases.ConnectTestDB()
+	db_test := Config.ConnectTestDB()
 	app := Config.GetInstanceServer()
 	initSpendingTypeForTest(app, db_test)
 	Config.StartServer()
