@@ -17,3 +17,8 @@ func (s *ICustomTagService) GetCustomTagsByUser(id string) (*[]interfaces.Custom
 	res, err := s.repo.GetCustomTagsByUser(id)
 	return res, err
 }
+
+// func (s *ICustomTagService) CreateCustomTag(id string) (*[]interfaces.CustomTagResultQuery, error) {
+// 	res, err := s.repo.GetCustomTagsByUser(id)
+// 	return res, err
+// }

@@ -10,3 +10,9 @@ type CustomTagResultQuery struct {
 	SpendingTypeId uuid.UUID
 	UserOwner      uuid.UUID
 }
+
+type CustomTagInsertDB struct {
+	NameTh         string
+	NameEn         string
+	SpendingTypeId uuid.UUID
+}
