@@ -2,7 +2,7 @@ package interfaces
 
 import "github.com/google/uuid"
 
-type SpendingTypeResult struct {
+type SpendingTypeResultQuery struct {
 	SpendingTypeId uuid.UUID
 	NameTh         string
 	NameEn         string

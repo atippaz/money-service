@@ -1,14 +1,13 @@
 package controllers
 
 import (
-	"fmt"
 	"money-service/services"
 
 	"github.com/gofiber/fiber/v2"
 )
 
 type IExpenseController interface {
-	GetUserById() fiber.Handler
+	GetExpensesByUser() fiber.Handler
 }
 
 type expenseController struct {
@@ -18,11 +17,10 @@ type expenseController struct {
 func ExpenseController(service *services.IExpenseService) IExpenseController {
 	return expenseController{service}
 }
-func (s expenseController) GetUserById() fiber.Handler {
+func (s expenseController) GetExpensesByUser() fiber.Handler {
 	return func(c *fiber.Ctx) error {
-		id := c.Params("id")
-		res, err := s.service.GetUserById(id)
-		fmt.Print(res)
+		userId := ""
+		res, err := s.service.GetExpensesByUser(userId)
 		if err != nil {
 			return c.Status(fiber.StatusInternalServerError).SendString(err.Error())
 		}

@@ -13,7 +13,7 @@ func ExpenseService(repo repositories.IExpenseRepository) *IExpenseService {
 	return &IExpenseService{repo: repo}
 }
 
-func (s *IExpenseService) GetUserById(id string) (*interfaces.UserResult, error) {
-	res, err := s.repo.GetUserById(id)
+func (s *IExpenseService) GetExpensesByUser(userId string) (*[]interfaces.ExpenseResultQuery, error) {
+	res, err := s.repo.GetExpensesByUser(userId)
 	return res, err
 }

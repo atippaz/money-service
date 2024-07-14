@@ -13,7 +13,7 @@ func SpendingTypeService(repo repositories.ISpendingTypeRepository) *ISpendingTy
 	return &ISpendingTypeService{repo: repo}
 }
 
-func (s *ISpendingTypeService) GetSpendingTypes() (*[]interfaces.SpendingTypeResult, error) {
+func (s *ISpendingTypeService) GetSpendingTypes() (*[]interfaces.SpendingTypeResultQuery, error) {
 	res, err := s.repo.GetSpendingTypes()
 	return res, err
 }

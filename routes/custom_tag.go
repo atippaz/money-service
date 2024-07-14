@@ -8,5 +8,5 @@ import (
 
 func CustomTagRoute(app fiber.Router, controllers controllers.ICustomTagController) {
 	api := app.Group("/custom_tags")
-	api.Get("/:id", controllers.GetCustomTagById())
+	api.Get("/:id", controllers.GetCustomTagsByUser())
 }

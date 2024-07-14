@@ -8,5 +8,5 @@ import (
 
 func ExpenseRoute(app fiber.Router, controllers controllers.IExpenseController) {
 	api := app.Group("/expenses")
-	api.Get("/:id", controllers.GetUserById())
+	api.Get("/", controllers.GetExpensesByUser())
 }

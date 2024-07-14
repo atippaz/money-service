@@ -1,7 +1,6 @@
 package repositories
 
 import (
-	"fmt"
 	"money-service/entities"
 	"money-service/interfaces"
 
@@ -16,17 +15,24 @@ func CustomTagRepositoryGorm(db *gorm.DB) ICustomTagRepository {
 	return &customTagRepositoryGorm{db: db}
 }
 
-func (r *customTagRepositoryGorm) GetUserById(id string) (*interfaces.UserResult, error) {
-	var result entities.UserEntity
+func (r *customTagRepositoryGorm) GetCustomTagsByUser(ownerId string) (*[]interfaces.CustomTagResultQuery, error) {
+	var results []entities.CustomTagEntity
 	db := r.db
 
-	if err := db.Select("spending_type_id, name_th, name_en").First(&result).Error; err != nil {
+	if err := db.Select("spending_type_id, name_th, name_en").Find(&results).Error; err != nil {
 		return nil, err
 	}
-	fmt.Print(result)
-	var spendingTypeResults = interfaces.UserResult{
-		UserId: result.UserId,
+	var customTagResults []interfaces.CustomTagResultQuery
+	for _, result := range results {
+		customTagResults = append(customTagResults, interfaces.CustomTagResultQuery{
+			SpendingTypeId: result.SpendingTypeId,
+			NameTh:         result.NameTh,
+			NameEn:         result.NameEn,
+			TagId:          result.TagId,
+			IsActive:       result.IsActive,
+			UserOwner:      result.UserOwner,
+		})
 	}
 
-	return &spendingTypeResults, nil
+	return &customTagResults, nil
 }

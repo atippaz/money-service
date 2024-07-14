@@ -8,7 +8,7 @@ import (
 )
 
 type ICustomTagController interface {
-	GetCustomTagById() fiber.Handler
+	GetCustomTagsByUser() fiber.Handler
 }
 
 type customTagController struct {
@@ -18,10 +18,10 @@ type customTagController struct {
 func CustomTagController(service *services.ICustomTagService) ICustomTagController {
 	return customTagController{service}
 }
-func (s customTagController) GetCustomTagById() fiber.Handler {
+func (s customTagController) GetCustomTagsByUser() fiber.Handler {
 	return func(c *fiber.Ctx) error {
 		id := c.Params("id")
-		res, err := s.service.GetUserById(id)
+		res, err := s.service.GetCustomTagsByUser(id)
 		fmt.Print(res)
 		if err != nil {
 			return c.Status(fiber.StatusInternalServerError).SendString(err.Error())

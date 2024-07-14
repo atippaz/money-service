@@ -8,7 +8,7 @@ import (
 )
 
 type IIncomeController interface {
-	GetIncomeById() fiber.Handler
+	GetIncomesByUser() fiber.Handler
 }
 
 type incomeController struct {
@@ -18,10 +18,10 @@ type incomeController struct {
 func IncomeController(service *services.IIncomeService) IIncomeController {
 	return incomeController{service}
 }
-func (s incomeController) GetIncomeById() fiber.Handler {
+func (s incomeController) GetIncomesByUser() fiber.Handler {
 	return func(c *fiber.Ctx) error {
-		id := c.Params("id")
-		res, err := s.service.GetUserById(id)
+		id := ""
+		res, err := s.service.GetIncomesByUser(id)
 		fmt.Print(res)
 		if err != nil {
 			return c.Status(fiber.StatusInternalServerError).SendString(err.Error())

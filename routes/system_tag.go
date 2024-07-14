@@ -8,5 +8,5 @@ import (
 
 func SystemTagRoute(app fiber.Router, controllers controllers.ISystemTagController) {
 	api := app.Group("/system_tags")
-	api.Get("/:id", controllers.GetSystemTagById())
+	api.Get("/", controllers.GetAllSystemTags())
 }

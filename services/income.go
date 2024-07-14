@@ -13,7 +13,7 @@ func IncomeService(repo repositories.IIncomeRepository) *IIncomeService {
 	return &IIncomeService{repo: repo}
 }
 
-func (s *IIncomeService) GetUserById(id string) (*interfaces.UserResult, error) {
-	res, err := s.repo.GetUserById(id)
+func (s *IIncomeService) GetIncomesByUser(id string) (*[]interfaces.IncomeResultQuery, error) {
+	res, err := s.repo.GetIncomesByUser(id)
 	return res, err
 }

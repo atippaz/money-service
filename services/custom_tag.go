@@ -2,18 +2,18 @@ package services
 
 import (
 	"money-service/interfaces"
-	repositories "money-service/repositories/system_tag"
+	repositories "money-service/repositories/custom_tag"
 )
 
-type ISystemTagService struct {
-	repo repositories.ISystemTagRepository
+type ICustomTagService struct {
+	repo repositories.ICustomTagRepository
 }
 
-func SystemTagService(repo repositories.ISystemTagRepository) *ISystemTagService {
-	return &ISystemTagService{repo: repo}
+func CustomTagService(repo repositories.ICustomTagRepository) *ICustomTagService {
+	return &ICustomTagService{repo: repo}
 }
 
-func (s *ISystemTagService) GetUserById(id string) (*interfaces.UserResult, error) {
-	res, err := s.repo.GetUserById(id)
+func (s *ICustomTagService) GetCustomTagsByUser(id string) (*[]interfaces.CustomTagResultQuery, error) {
+	res, err := s.repo.GetCustomTagsByUser(id)
 	return res, err
 }

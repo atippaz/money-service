@@ -16,7 +16,7 @@ func SpendingTypeRepositoryGorm(db *gorm.DB) ISpendingTypeRepository {
 	return &spendingRepositoryGorm{db: db}
 }
 
-func (r *spendingRepositoryGorm) GetSpendingTypes() (*[]interfaces.SpendingTypeResult, error) {
+func (r *spendingRepositoryGorm) GetSpendingTypes() (*[]interfaces.SpendingTypeResultQuery, error) {
 	var results []entities.SpendingTypeEntity
 	db := r.db
 
@@ -24,9 +24,9 @@ func (r *spendingRepositoryGorm) GetSpendingTypes() (*[]interfaces.SpendingTypeR
 		return nil, err
 	}
 	fmt.Print(results)
-	var spendingTypeResults []interfaces.SpendingTypeResult
+	var spendingTypeResults []interfaces.SpendingTypeResultQuery
 	for _, result := range results {
-		spendingTypeResults = append(spendingTypeResults, interfaces.SpendingTypeResult{
+		spendingTypeResults = append(spendingTypeResults, interfaces.SpendingTypeResultQuery{
 			SpendingTypeId: result.SpendingTypeId,
 			NameTh:         result.NameTh,
 			NameEn:         result.NameEn,

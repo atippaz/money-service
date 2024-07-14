@@ -1,7 +1,6 @@
 package repositories
 
 import (
-	"fmt"
 	"money-service/config"
 	"money-service/interfaces"
 )
@@ -14,14 +13,13 @@ func SpendingTypeRepositoryTest(db config.DummySpendingInstance) ISpendingTypeRe
 	return &spendingRepositoryTest{db: db}
 }
 
-func (r *spendingRepositoryTest) GetSpendingTypes() (*[]interfaces.SpendingTypeResult, error) {
+func (r *spendingRepositoryTest) GetSpendingTypes() (*[]interfaces.SpendingTypeResultQuery, error) {
 
 	db := r.db
 	results := db.GetSpending()
-	fmt.Print(results)
-	var spendingTypeResults []interfaces.SpendingTypeResult
+	var spendingTypeResults []interfaces.SpendingTypeResultQuery
 	for _, result := range results {
-		spendingTypeResults = append(spendingTypeResults, interfaces.SpendingTypeResult{
+		spendingTypeResults = append(spendingTypeResults, interfaces.SpendingTypeResultQuery{
 			SpendingTypeId: result.ID,
 			NameTh:         result.Name,
 			NameEn:         result.Name,

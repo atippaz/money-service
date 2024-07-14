@@ -8,5 +8,5 @@ import (
 
 func IncomeRoute(app fiber.Router, controllers controllers.IIncomeController) {
 	api := app.Group("/incomes")
-	api.Get("/:id", controllers.GetIncomeById())
+	api.Get("/", controllers.GetIncomesByUser())
 }
