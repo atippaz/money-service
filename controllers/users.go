@@ -8,7 +8,7 @@ import (
 )
 
 type IUserContoller interface {
-	GetUserById(id string) fiber.Handler
+	GetUserById() fiber.Handler
 }
 
 type userContoller struct {
@@ -18,8 +18,9 @@ type userContoller struct {
 func UserContoller(service *services.IUserService) IUserContoller {
 	return userContoller{service}
 }
-func (s userContoller) GetUserById(id string) fiber.Handler {
+func (s userContoller) GetUserById() fiber.Handler {
 	return func(c *fiber.Ctx) error {
+		id := c.Params("id")
 		res, err := s.service.GetUserById(id)
 		fmt.Print(res)
 		if err != nil {
