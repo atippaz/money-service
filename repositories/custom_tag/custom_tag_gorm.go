@@ -24,7 +24,7 @@ func (r *customTagRepositoryGorm) CreateCustomTag(userOwner uuid.UUID, payload i
 		SpendingTypeId: payload.SpendingTypeId,
 		UserOwner:      userOwner,
 	}
-	if err := db.Create(_payload).Error; err != nil {
+	if err := db.Create(&_payload).Error; err != nil {
 		return nil, err
 	}
 	return &_payload.TagId, nil

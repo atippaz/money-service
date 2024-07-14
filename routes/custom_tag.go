@@ -10,5 +10,7 @@ import (
 func CustomTagRoute(app fiber.Router, controllers controllers.ICustomTagController) {
 	api := app.Group("/custom_tags")
 	api.Use(middlewares.JWTMiddleware())
-	api.Get("/:id", controllers.GetCustomTagsByUser())
+	api.Get("/", controllers.GetCustomTagsByUser())
+	api.Post("/", controllers.CreateCustomTag())
+
 }
