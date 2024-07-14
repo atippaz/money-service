@@ -11,7 +11,7 @@ func ExpenseRoute(app fiber.Router, controllers controllers.IExpenseController) 
 	api := app.Group("/expenses")
 	api.Use(middlewares.JWTMiddleware())
 	api.Get("/", controllers.GetExpensesByUser())
-	api.Post("/", controllers.GetExpensesByUser())
+	api.Post("/", controllers.CreateExpense())
 	// delete in 1 day
 	// update in 30 minute
 }

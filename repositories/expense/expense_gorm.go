@@ -4,6 +4,7 @@ import (
 	"money-service/entities"
 	"money-service/interfaces"
 
+	"github.com/google/uuid"
 	"gorm.io/gorm"
 )
 
@@ -30,4 +31,8 @@ func (r *expenseRepositoryGorm) GetExpensesByUser(userId string) (*[]interfaces.
 	}
 
 	return &expenseResults, nil
+}
+func (r *expenseRepositoryGorm) CreateExpense(userId string, payload interfaces.ExpenseResultInsertDb) (*uuid.UUID, error) {
+
+	return nil, nil
 }

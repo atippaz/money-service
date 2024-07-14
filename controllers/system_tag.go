@@ -6,18 +6,14 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
-type ISystemTagController interface {
-	GetAllSystemTags() fiber.Handler
-}
-
-type systemTagController struct {
+type ISystemTagController struct {
 	service *services.ISystemTagService
 }
 
 func SystemTagController(service *services.ISystemTagService) ISystemTagController {
-	return systemTagController{service}
+	return ISystemTagController{service}
 }
-func (s systemTagController) GetAllSystemTags() fiber.Handler {
+func (s ISystemTagController) GetAllSystemTags() fiber.Handler {
 	return func(c *fiber.Ctx) error {
 		res, err := s.service.GetAllSystemTags()
 		if err != nil {

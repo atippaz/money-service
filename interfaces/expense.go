@@ -14,3 +14,8 @@ type ExpenseResultQuery struct {
 	Value       decimal.Decimal
 	UserOwner   uuid.UUID
 }
+type ExpenseResultInsertDb struct {
+	TagId     uuid.UUID
+	Value     decimal.Decimal
+	UserOwner uuid.UUID
+}
