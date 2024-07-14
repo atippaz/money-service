@@ -12,5 +12,6 @@ func CustomTagRoute(app fiber.Router, controllers controllers.ICustomTagControll
 	api.Use(middlewares.JWTMiddleware())
 	api.Get("/", controllers.GetCustomTagsByUser())
 	api.Post("/", controllers.CreateCustomTag())
-
+	// update by id
+	// delete by id
 }
