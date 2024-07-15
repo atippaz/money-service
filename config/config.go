@@ -4,8 +4,11 @@ import (
 	"log"
 	"os"
 
+	"github.com/google/uuid"
 	"github.com/joho/godotenv"
 )
+
+var UserId = uuid.MustParse("e8bc8014-4a5a-4e91-a6d2-3b5b6f77d3e0")
 
 type Config struct {
 	SERVER_PORT string

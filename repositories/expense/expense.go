@@ -7,6 +7,6 @@ import (
 )
 
 type IExpenseRepository interface {
-	GetExpensesByUser(userId string) (*[]interfaces.ExpenseResultQuery, error)
-	CreateExpense(userId string, payload interfaces.ExpenseResultInsertDb) (*uuid.UUID, error)
+	GetExpensesByUser(userId uuid.UUID) (*[]interfaces.ExpenseResultQuery, error)
+	CreateExpense(userId uuid.UUID, payload interfaces.ExpenseInsertDb) (*uuid.UUID, error)
 }

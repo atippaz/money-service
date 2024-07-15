@@ -20,7 +20,7 @@ type UserEntity struct {
 }
 
 func (UserEntity) TableName() string {
-	return "user_tags"
+	return "users"
 }
 
 // `gorm:"foreignKey:SpendingTypeId;references:SpendingTypeId"`

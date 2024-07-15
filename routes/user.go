@@ -13,6 +13,6 @@ func UserRoute(app fiber.Router, controllers controllers.IUserController) {
 	api := app.Group("/users")
 	api.Use(middlewares.JWTMiddleware())
 	api.Get("/profile", controllers.GetUserById())
-	// deactive
+	api.Delete("/", controllers.DeActiveAccount())
 	// update
 }

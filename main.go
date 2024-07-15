@@ -5,6 +5,8 @@ import (
 	"money-service/initials"
 )
 
+// var UserId = uuid.MustParse("")
+
 func main() {
 	db_gorm := Config.ConnectGormDb()
 	// db_test := Config.ConnectTestDB()

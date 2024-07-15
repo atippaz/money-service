@@ -14,3 +14,15 @@ type IncomeResultQuery struct {
 	Value       decimal.Decimal
 	UserOwner   uuid.UUID
 }
+
+type IncomeInsertDb struct {
+	TagId     uuid.UUID
+	Value     decimal.Decimal
+	UserOwner uuid.UUID
+}
+
+type IncomeInsertRequest struct {
+	TagId     uuid.UUID       `json:"tagId"`
+	Value     decimal.Decimal `json:"value"`
+	UserOwner uuid.UUID       `json:"userOwner"`
+}

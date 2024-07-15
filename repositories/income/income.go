@@ -1,7 +1,12 @@
 package repositories
 
-import "money-service/interfaces"
+import (
+	"money-service/interfaces"
+
+	"github.com/google/uuid"
+)
 
 type IIncomeRepository interface {
-	GetIncomesByUser(userId string) (*[]interfaces.IncomeResultQuery, error)
+	GetIncomesByUser(userId uuid.UUID) (*[]interfaces.IncomeResultQuery, error)
+	CreateIncome(id uuid.UUID, payload interfaces.IncomeInsertDb) (*uuid.UUID, error)
 }

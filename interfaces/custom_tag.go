@@ -16,3 +16,9 @@ type CustomTagInsertDB struct {
 	NameEn         string
 	SpendingTypeId uuid.UUID
 }
+
+type CustomTagInsertRequest struct {
+	NameTh         string
+	NameEn         string
+	SpendingTypeId uuid.UUID
+}

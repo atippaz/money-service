@@ -2,6 +2,7 @@ package middlewares
 
 import (
 	"fmt"
+	"money-service/config"
 
 	"github.com/gofiber/fiber/v2"
 	// "github.com/golang-jwt/jwt/v4"
@@ -40,7 +41,7 @@ func JWTMiddleware() fiber.Handler {
 		// 	})
 		// }
 
-		// c.Locals("user", claims.Username)
+		c.Locals("user", config.UserId)
 
 		return c.Next()
 	}

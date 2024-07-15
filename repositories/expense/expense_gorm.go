@@ -16,7 +16,7 @@ func ExpenseRepositoryGorm(db *gorm.DB) IExpenseRepository {
 	return &expenseRepositoryGorm{db: db}
 }
 
-func (r *expenseRepositoryGorm) GetExpensesByUser(userId string) (*[]interfaces.ExpenseResultQuery, error) {
+func (r *expenseRepositoryGorm) GetExpensesByUser(userId uuid.UUID) (*[]interfaces.ExpenseResultQuery, error) {
 	var results []entities.ExpensesEntity
 	db := r.db
 
@@ -32,7 +32,7 @@ func (r *expenseRepositoryGorm) GetExpensesByUser(userId string) (*[]interfaces.
 
 	return &expenseResults, nil
 }
-func (r *expenseRepositoryGorm) CreateExpense(userId string, payload interfaces.ExpenseResultInsertDb) (*uuid.UUID, error) {
+func (r *expenseRepositoryGorm) CreateExpense(userId uuid.UUID, payload interfaces.ExpenseInsertDb) (*uuid.UUID, error) {
 
 	return nil, nil
 }

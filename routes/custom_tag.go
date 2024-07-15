@@ -12,6 +12,10 @@ func CustomTagRoute(app fiber.Router, controllers controllers.ICustomTagControll
 	api.Use(middlewares.JWTMiddleware())
 	api.Get("/", controllers.GetCustomTagsByUser())
 	api.Post("/", controllers.CreateCustomTag())
+
+	// todo
+	// api.Patch("/:custom_tag_id")
+
 	// update by id
-	// delete by id
+	// delete by id todo soft delete isdeactive status
 }
