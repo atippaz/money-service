@@ -5,12 +5,13 @@ import (
 	"money-service/config"
 
 	"github.com/gofiber/fiber/v2"
-	// "github.com/golang-jwt/jwt/v4"
 )
 
 // Custom claims struct
 type Claims struct {
-	Username string `json:"username"`
+	Username string `json:"userName"`
+	Email    string `json:"email"`
+	UserId   string `json:"userId"`
 	// jwt.RegisteredClaims
 }
 
@@ -28,7 +29,7 @@ func JWTMiddleware() fiber.Handler {
 		fmt.Println(tokenString)
 
 		// claims := &Claims{}
-		// token, err := jwt.ParseWithClaims(tokenString, claims, func(token *jwt.Token) (interface{}, error) {
+		// token, err := jwt.ParseWithClaims(tokenString, claims, func(token *jwt.Token) (Claims{}, error) {
 		// 	if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
 		// 		return nil, fiber.NewError(fiber.StatusUnauthorized, "Unexpected signing method")
 		// 	}

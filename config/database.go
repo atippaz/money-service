@@ -17,6 +17,7 @@ func ConnectGormDb() *gorm.DB {
 	if err != nil {
 		panic(err)
 	}
+
 	// Database.AutoMigrate(&models.User{})
 	Database.AutoMigrate(&entities.SpendingTypeEntity{})
 	return Database
