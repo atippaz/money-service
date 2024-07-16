@@ -39,3 +39,10 @@ type UserResultResponse struct {
 	Profile     string    `json:"profile"`
 	CreatedDate time.Time `json:"createdDate"`
 }
+
+type UserLoginInfoQuery struct {
+	UserId   uuid.UUID `json:"userId"`
+	Email    string    `json:"email"`
+	UserName string    `json:"userName"`
+	Password string    `json:"password"`
+}

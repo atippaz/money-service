@@ -8,6 +8,7 @@ import (
 	spending_type "money-service/repositories/spending_type"
 	system_tag "money-service/repositories/system_tag"
 	user "money-service/repositories/user"
+	"money-service/utils"
 
 	"money-service/routes"
 	"money-service/services"
@@ -28,6 +29,7 @@ var incomeService *services.IIncomeService
 var system_tagService *services.ISystemTagService
 var custom_tagService *services.ICustomTagService
 var userService *services.IUserService
+var authService *services.IAuthService
 
 var spendingController controllers.ISpendingTypeController
 var expenseController controllers.IExpenseController
@@ -35,7 +37,16 @@ var incomeController controllers.IIncomeController
 var systemTagController controllers.ISystemTagController
 var customTagController controllers.ICustomTagController
 var userController controllers.IUserController
+var authController controllers.IAuthController
 
+var encodeUtils utils.IEncodingHelper
+var jwtUtils utils.IJwtHelper
+
+func initUtils() {
+	encodeUtils = utils.Encoding()
+	jwtUtils = utils.JwtHelper()
+
+}
 func initServices() {
 	spendingService = services.SpendingTypeService(spendingRepo)
 	expenseService = services.ExpenseService(expenseRepo)
@@ -43,6 +54,7 @@ func initServices() {
 	system_tagService = services.SystemTagService(system_tagRepo)
 	custom_tagService = services.CustomTagService(custom_tagRepo)
 	userService = services.UserService(userRepo)
+	authService = services.AuthService(userService, encodeUtils, jwtUtils)
 }
 
 func initContollers() {
@@ -52,6 +64,7 @@ func initContollers() {
 	systemTagController = controllers.SystemTagController(system_tagService)
 	customTagController = controllers.CustomTagController(custom_tagService)
 	userController = controllers.UserController(userService)
+	authController = controllers.AuthController(authService)
 }
 
 func initRoutes(app fiber.Router) {
@@ -61,6 +74,8 @@ func initRoutes(app fiber.Router) {
 	routes.SystemTagRoute(app, systemTagController)
 	routes.CustomTagRoute(app, customTagController)
 	routes.UserRoute(app, userController)
+	routes.AuthRoute(app, authController)
+
 }
 
 func InitApplication(app fiber.Router) {

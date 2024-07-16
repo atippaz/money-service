@@ -66,3 +66,25 @@ func (r *userRepositoryGorm) GetUserById(id uuid.UUID) (*interfaces.UserResultQu
 
 	return &spendingTypeResults, nil
 }
+
+func (r *userRepositoryGorm) GetUserByCredential(credential string) (*interfaces.UserResultQuery, error) {
+	var result entities.UserEntity
+	db := r.db
+
+	if err := db.Where("(email = ? OR username = ?) AND is_active = ?", credential, credential, true).First(&result).Error; err != nil {
+		return nil, err
+	}
+
+	var spendingTypeResults = interfaces.UserResultQuery{
+		UserId:      result.UserId,
+		UserName:    result.UserName,
+		Email:       result.Email,
+		LastName:    result.LastName,
+		FirstName:   result.FirstName,
+		DisplayName: result.DisplayName,
+		Profile:     result.Profile,
+		CreatedDate: result.CreatedDate,
+	}
+
+	return &spendingTypeResults, nil
+}

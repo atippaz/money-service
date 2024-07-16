@@ -7,14 +7,6 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
-// Custom claims struct
-type Claims struct {
-	Username string `json:"userName"`
-	Email    string `json:"email"`
-	UserId   string `json:"userId"`
-	// jwt.RegisteredClaims
-}
-
 // JWTMiddleware function to check token
 func JWTMiddleware() fiber.Handler {
 	return func(c *fiber.Ctx) error {

@@ -29,6 +29,16 @@ func (s *IUserService) GetUserById(id uuid.UUID) (*interfaces.UserResultResponse
 	}, err
 }
 
+func (s *IUserService) GetLoginDataByCredential(credential string) (*interfaces.UserLoginInfoQuery, error) {
+	result, err := s.repo.GetUserByCredential(credential)
+	return &interfaces.UserLoginInfoQuery{
+		UserName: result.UserName,
+		Email:    result.Email,
+		Password: result.Password,
+		UserId:   result.UserId,
+	}, err
+}
+
 func (s *IUserService) DeActiveAccount(id string) (bool, error) {
 	res, err := s.repo.DeActiveAccount(id)
 	return res, err

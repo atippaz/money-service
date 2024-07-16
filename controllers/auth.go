@@ -9,10 +9,10 @@ import (
 )
 
 type IAuthController struct {
-	service *services.IUserService
+	service *services.IAuthService
 }
 
-func AuthController(service *services.IUserService) IAuthController {
+func AuthController(service *services.IAuthService) IAuthController {
 	return IAuthController{service}
 }
 func (s IAuthController) Register() fiber.Handler {
@@ -21,7 +21,7 @@ func (s IAuthController) Register() fiber.Handler {
 		if err := c.BodyParser(&payload); err != nil {
 			return c.Status(400).JSON(fiber.Map{"error": err.Error()})
 		}
-		res, err := s.service.CreateUser(interfaces.UserInsertDb{
+		res, err := s.service.Register(interfaces.AuthRegisterInsert{
 			UserName:    payload.UserName,
 			Email:       payload.Email,
 			LastName:    payload.LastName,
@@ -39,7 +39,15 @@ func (s IAuthController) Register() fiber.Handler {
 }
 func (s IAuthController) Login() fiber.Handler {
 	return func(c *fiber.Ctx) error {
-		return nil
+		payload := interfaces.AuthLoginRequest{}
+		if err := c.BodyParser(&payload); err != nil {
+			return c.Status(400).JSON(fiber.Map{"error": err.Error()})
+		}
+		res, err := s.service.Login(payload.Credential, payload.Password)
+		if err != nil {
+			return c.Status(401).JSON(fiber.Map{"error": err.Error()})
+		}
+		return c.JSON(res)
 	}
 }
 func (s IAuthController) Logout() fiber.Handler {
