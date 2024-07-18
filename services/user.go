@@ -1,18 +1,22 @@
 package services
 
 import (
+	"fmt"
 	"money-service/interfaces"
 	repositories "money-service/repositories/user"
+	"money-service/utils"
 
 	"github.com/google/uuid"
 )
 
 type IUserService struct {
-	repo repositories.IUserRepository
+	repo   repositories.IUserRepository
+	encode utils.IEncodingHelper
 }
 
-func UserService(repo repositories.IUserRepository) *IUserService {
-	return &IUserService{repo: repo}
+func UserService(repo repositories.IUserRepository, encode utils.IEncodingHelper) *IUserService {
+	fmt.Println(encode)
+	return &IUserService{repo: repo, encode: encode}
 }
 
 func (s *IUserService) GetUserById(id uuid.UUID) (*interfaces.UserResultResponse, error) {
@@ -48,15 +52,23 @@ func (s *IUserService) CreateUser(payload interfaces.UserInsertDb) (*uuid.UUID, 
 	//todo check email
 	//todo check username
 	//todo hash password
-
+	fmt.Println(s.encode)
+	password, err := s.encode.Hashing(&payload.Password)
+	if err != nil {
+		return nil, err
+	}
+	if err != nil {
+		return nil, err
+	}
 	res, err := s.repo.CreateUser(interfaces.UserInsertDb{
 		UserName:    payload.UserName,
 		Email:       payload.Email,
 		LastName:    payload.LastName,
 		FirstName:   payload.FirstName,
 		DisplayName: payload.DisplayName,
-		Password:    payload.Password,
+		Password:    password,
 		Profile:     payload.Profile,
 	})
+
 	return res, err
 }

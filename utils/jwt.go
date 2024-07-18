@@ -2,7 +2,7 @@ package utils
 
 import (
 	"errors"
-	"os"
+	"fmt"
 	"time"
 
 	"github.com/golang-jwt/jwt/v4"
@@ -16,7 +16,9 @@ type IJwtHelper interface {
 type jwtHelper struct {
 }
 
-var jwtKey = os.Getenv("SECRET_KEY")
+var jwtKey = "test"
+
+// os.Getenv("SECERT_KEY")
 
 func JwtHelper() IJwtHelper {
 	return &jwtHelper{}
@@ -27,8 +29,8 @@ func (j *jwtHelper) CreateJWT(claims interface{}, expirationTime time.Time) (str
 		"data": claims,
 		"exp":  expirationTime.Unix(),
 	})
-
-	tokenString, err := token.SignedString(jwtKey)
+	fmt.Println("ss", jwtKey)
+	tokenString, err := token.SignedString([]byte(jwtKey))
 	if err != nil {
 		return "", err
 	}

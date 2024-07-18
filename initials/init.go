@@ -53,7 +53,7 @@ func initServices() {
 	incomeService = services.IncomeService(incomeRepo)
 	system_tagService = services.SystemTagService(system_tagRepo)
 	custom_tagService = services.CustomTagService(custom_tagRepo)
-	userService = services.UserService(userRepo)
+	userService = services.UserService(userRepo, encodeUtils)
 	authService = services.AuthService(userService, encodeUtils, jwtUtils)
 }
 
@@ -79,6 +79,7 @@ func initRoutes(app fiber.Router) {
 }
 
 func InitApplication(app fiber.Router) {
+	initUtils()
 	initServices()
 	initContollers()
 	initRoutes(app)

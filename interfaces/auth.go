@@ -1,6 +1,9 @@
 package interfaces
 
-import "github.com/google/uuid"
+import (
+	"github.com/golang-jwt/jwt/v4"
+	"github.com/google/uuid"
+)
 
 type AuthRegisterRequest struct {
 	UserName    string `json:"userName"`
@@ -30,5 +33,5 @@ type AuthClaims struct {
 	Username string    `json:"userName"`
 	Email    string    `json:"email"`
 	UserId   uuid.UUID `json:"userId"`
-	// jwt.RegisteredClaims
+	jwt.RegisteredClaims
 }

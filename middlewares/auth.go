@@ -3,8 +3,10 @@ package middlewares
 import (
 	"fmt"
 	"money-service/config"
+	"money-service/interfaces"
 
 	"github.com/gofiber/fiber/v2"
+	"github.com/golang-jwt/jwt"
 )
 
 // JWTMiddleware function to check token
@@ -20,19 +22,20 @@ func JWTMiddleware() fiber.Handler {
 		}
 		fmt.Println(tokenString)
 
-		// claims := &Claims{}
-		// token, err := jwt.ParseWithClaims(tokenString, claims, func(token *jwt.Token) (Claims{}, error) {
-		// 	if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
-		// 		return nil, fiber.NewError(fiber.StatusUnauthorized, "Unexpected signing method")
-		// 	}
-		// 	return []byte("your-secret-key"), nil
-		// })
+		claims := &interfaces.AuthClaims{}
+		token, err := jwt.ParseWithClaims(tokenString, claims, func(token *jwt.Token) (interface{}, error) {
+			if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
+				return nil, fiber.NewError(fiber.StatusUnauthorized, "Unexpected signing method")
+			}
+			return []byte("test"), nil
+		})
+		fmt.Println(token)
 
-		// if err != nil || !token.Valid {
-		// 	return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{
-		// 		"message": "Invalid or expired JWT",
-		// 	})
-		// }
+		if err != nil || !token.Valid {
+			return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{
+				"message": "Invalid or expired JWT",
+			})
+		}
 
 		c.Locals("user", config.UserId)
 

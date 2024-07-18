@@ -1,6 +1,7 @@
 package services
 
 import (
+	"fmt"
 	"money-service/interfaces"
 	"money-service/utils"
 	"time"
@@ -38,14 +39,16 @@ func (s *IAuthService) Login(credential, password string) (*string, error) {
 	if err != nil {
 		return nil, err
 	}
+	fmt.Println(userSecureData)
 	if !s.encodeHelper.ComparePassword(password, userSecureData.Password) {
+
 		return nil, err
 	}
 	jwt, err := s.jwtHelper.CreateJWT(&interfaces.AuthClaims{
 		UserId:   userSecureData.UserId,
 		Username: userSecureData.UserName,
 		Email:    userSecureData.Email,
-	}, <-time.After(1))
+	}, <-time.After(50000))
 	if err != nil {
 		return nil, err
 	}

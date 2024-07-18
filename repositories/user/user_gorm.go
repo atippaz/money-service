@@ -1,6 +1,7 @@
 package repositories
 
 import (
+	"fmt"
 	"money-service/entities"
 	"money-service/interfaces"
 
@@ -19,6 +20,7 @@ func UserRepositoryGorm(db *gorm.DB) IUserRepository {
 func (r *userRepositoryGorm) CreateUser(payload interfaces.UserInsertDb) (*uuid.UUID, error) {
 	db := r.db
 	newUser := entities.UserEntity{
+		UserId:      uuid.New(),
 		UserName:    payload.UserName,
 		Email:       payload.Email,
 		LastName:    payload.LastName,
@@ -28,9 +30,11 @@ func (r *userRepositoryGorm) CreateUser(payload interfaces.UserInsertDb) (*uuid.
 		IsActive:    true,
 		Profile:     payload.Profile,
 	}
-	if err := db.Create(newUser).Error; err != nil {
+	if err := db.Create(&newUser).Error; err != nil {
 		return nil, err
 	}
+	fmt.Println(newUser.UserId)
+	fmt.Println(&newUser.UserId)
 
 	return &newUser.UserId, nil
 }
@@ -71,7 +75,7 @@ func (r *userRepositoryGorm) GetUserByCredential(credential string) (*interfaces
 	var result entities.UserEntity
 	db := r.db
 
-	if err := db.Where("(email = ? OR username = ?) AND is_active = ?", credential, credential, true).First(&result).Error; err != nil {
+	if err := db.Where("(email = ? OR user_name = ?) AND is_active = ?", credential, credential, true).First(&result).Error; err != nil {
 		return nil, err
 	}
 

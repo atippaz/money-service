@@ -21,6 +21,8 @@ func (s IAuthController) Register() fiber.Handler {
 		if err := c.BodyParser(&payload); err != nil {
 			return c.Status(400).JSON(fiber.Map{"error": err.Error()})
 		}
+		fmt.Println(payload)
+
 		res, err := s.service.Register(interfaces.AuthRegisterInsert{
 			UserName:    payload.UserName,
 			Email:       payload.Email,
@@ -34,6 +36,7 @@ func (s IAuthController) Register() fiber.Handler {
 		if err != nil {
 			return c.Status(fiber.StatusInternalServerError).SendString(err.Error())
 		}
+
 		return c.JSON(res)
 	}
 }
