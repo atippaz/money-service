@@ -1,8 +1,8 @@
 package main
 
 import (
-	Config "money-service/config"
-	"money-service/initials"
+	Config "money-service/src/config"
+	"money-service/src/initials"
 )
 
 func main() {
