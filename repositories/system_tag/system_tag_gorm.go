@@ -1,7 +1,6 @@
 package repositories
 
 import (
-	"fmt"
 	"money-service/entities"
 
 	"gorm.io/gorm"
@@ -22,7 +21,6 @@ func (r *systemTagRepositoryGorm) GetAllSystemTags() (*[]SystemTagResultQuery, e
 	if err := db.Find(&results).Error; err != nil {
 		return nil, err
 	}
-	fmt.Println(results)
 	var systemTagResults []SystemTagResultQuery
 	for _, result := range results {
 		systemTagResults = append(systemTagResults, SystemTagResultQuery{

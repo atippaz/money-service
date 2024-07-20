@@ -16,24 +16,24 @@ func NewGormCustomTagRepository(db *gorm.DB) CustomTagRepository {
 }
 func (r *customTagRepositoryGorm) CreateCustomTag(userOwner uuid.UUID, payload CustomTagInsertDB) (*uuid.UUID, error) {
 	db := r.db
-	_payload := entities.CustomTagEntity{
+	newCustomTag := entities.CustomTagEntity{
 		NameTh:         payload.NameTh,
 		NameEn:         payload.NameEn,
 		IsActive:       true,
 		SpendingTypeId: payload.SpendingTypeId,
 		UserOwner:      userOwner,
 	}
-	if err := db.Create(&_payload).Error; err != nil {
+	if err := db.Create(&newCustomTag).Error; err != nil {
 		return nil, err
 	}
-	return &_payload.TagId, nil
+	return &newCustomTag.TagId, nil
 }
 
 func (r *customTagRepositoryGorm) GetCustomTagsByUser(ownerId string) (*[]CustomTagResultQuery, error) {
 	var results []entities.CustomTagEntity
 	db := r.db
 
-	if err := db.Select("spending_type_id, name_th, name_en").Find(&results).Error; err != nil {
+	if err := db.Where("AND is_active = ?", true).Find(&results).Error; err != nil {
 		return nil, err
 	}
 	var customTagResults []CustomTagResultQuery

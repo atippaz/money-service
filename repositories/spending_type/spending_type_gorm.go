@@ -1,7 +1,6 @@
 package repositories
 
 import (
-	"fmt"
 	"money-service/entities"
 
 	"gorm.io/gorm"
@@ -22,7 +21,6 @@ func (r *spendingRepositoryGorm) GetSpendingTypes() (*[]SpendingTypeResultQuery,
 	if err := db.Select("spending_type_id, name_th, name_en").Find(&results).Error; err != nil {
 		return nil, err
 	}
-	fmt.Print(results)
 	var spendingTypeResults []SpendingTypeResultQuery
 	for _, result := range results {
 		spendingTypeResults = append(spendingTypeResults, SpendingTypeResultQuery{

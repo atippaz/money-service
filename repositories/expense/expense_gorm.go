@@ -19,7 +19,7 @@ func (r *expenseRepositoryGorm) GetExpensesByUser(userId uuid.UUID) (*[]ExpenseR
 	var results []entities.ExpensesEntity
 	db := r.db
 
-	if err := db.Select("*").Find(&results).Error; err != nil {
+	if err := db.Find(&results).Error; err != nil {
 		return nil, err
 	}
 	var expenseResults []ExpenseResultQuery
@@ -32,6 +32,15 @@ func (r *expenseRepositoryGorm) GetExpensesByUser(userId uuid.UUID) (*[]ExpenseR
 	return &expenseResults, nil
 }
 func (r *expenseRepositoryGorm) CreateExpense(userId uuid.UUID, payload ExpenseInsertDb) (*uuid.UUID, error) {
-
-	return nil, nil
+	db := r.db
+	newExpense := entities.ExpensesEntity{
+		ExpenseId: uuid.New(),
+		TagId:     payload.TagId,
+		Value:     payload.Value,
+		UserOwner: userId,
+	}
+	if err := db.Create(&newExpense).Error; err != nil {
+		return nil, err
+	}
+	return &newExpense.ExpenseId, nil
 }

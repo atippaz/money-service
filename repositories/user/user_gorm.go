@@ -50,7 +50,7 @@ func (r *userRepositoryGorm) GetUserById(id uuid.UUID) (*UserResultQuery, error)
 	result.UserId = id
 	db := r.db
 
-	if err := db.Select("*").First(&result).Where("is_active", true).Error; err != nil {
+	if err := db.First(&result).Where("is_active", true).Error; err != nil {
 		return nil, err
 	}
 	var spendingTypeResults = UserResultQuery{

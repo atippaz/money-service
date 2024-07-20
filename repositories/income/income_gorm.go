@@ -14,16 +14,25 @@ type incomeRepositoryGorm struct {
 func NewGormIncomeRepository(db *gorm.DB) IncomeRepository {
 	return &incomeRepositoryGorm{db: db}
 }
-func (r *incomeRepositoryGorm) CreateIncome(id uuid.UUID, payload IncomeInsertDb) (*uuid.UUID, error) {
-
-	return nil, nil
+func (r *incomeRepositoryGorm) CreateIncome(userId uuid.UUID, payload IncomeInsertDb) (*uuid.UUID, error) {
+	db := r.db
+	newIncome := entities.IncomesEntity{
+		IncomeId:  uuid.New(),
+		TagId:     payload.TagId,
+		Value:     payload.Value,
+		UserOwner: userId,
+	}
+	if err := db.Create(&newIncome).Error; err != nil {
+		return nil, err
+	}
+	return (&newIncome.IncomeId), nil
 }
 
 func (r *incomeRepositoryGorm) GetIncomesByUser(userId uuid.UUID) (*[]IncomeResultQuery, error) {
 	var results []entities.IncomesEntity
 	db := r.db
 
-	if err := db.Select("").Where("user_onwer = ?", userId).Find(&results).Error; err != nil {
+	if err := db.Where("user_onwer = ?", userId).Find(&results).Error; err != nil {
 		return nil, err
 	}
 	var incomesResults []IncomeResultQuery
