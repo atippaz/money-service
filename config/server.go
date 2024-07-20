@@ -10,9 +10,8 @@ import (
 )
 
 var app = fiber.New()
-var cfg = LoadConfig()
 
-func GetInstanceServer() fiber.Router {
+func GetInstanceServer() (fiber.Router, *Config) {
 	app.Use(logger.New())
 	app.Use(recover.New())
 
@@ -21,7 +20,7 @@ func GetInstanceServer() fiber.Router {
 		return c.SendString("welcome to my api")
 	})
 
-	return api
+	return api, cfg
 }
 func StartServer() {
 	if err := app.Listen(":" + cfg.SERVER_PORT); err != nil {

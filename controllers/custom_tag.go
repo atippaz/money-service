@@ -8,14 +8,22 @@ import (
 	"github.com/google/uuid"
 )
 
-type ICustomTagController struct {
-	service *services.ICustomTagService
+type CustomTagController[T any] interface {
+	GetCustomTagsByUser() T
+	CreateCustomTag() T
+}
+type customTagController struct {
+	service *services.CustomTagService
 }
 
-func CustomTagController(service *services.ICustomTagService) ICustomTagController {
-	return ICustomTagController{service}
+type FiberCustomTagController interface {
+	CustomTagController[fiber.Handler]
 }
-func (s ICustomTagController) GetCustomTagsByUser() fiber.Handler {
+
+func NewFiberCustomTagController(service *services.CustomTagService) FiberCustomTagController {
+	return &customTagController{service}
+}
+func (s customTagController) GetCustomTagsByUser() fiber.Handler {
 	return func(c *fiber.Ctx) error {
 		// user := c.Locals("user").(string)
 		// fmt.Println(user)
@@ -28,8 +36,7 @@ func (s ICustomTagController) GetCustomTagsByUser() fiber.Handler {
 		return c.JSON(res)
 	}
 }
-
-func (s ICustomTagController) CreateCustomTag() fiber.Handler {
+func (s customTagController) CreateCustomTag() fiber.Handler {
 	return func(c *fiber.Ctx) error {
 		// user := c.Locals("user").(string)
 		id := uuid.MustParse("e8bc8014-4a5a-4e91-a6d2-3b5b6f77d3e0")

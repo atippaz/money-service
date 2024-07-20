@@ -6,7 +6,7 @@ import (
 	"github.com/google/uuid"
 )
 
-type IExpenseRepository interface {
+type ExpenseRepository interface {
 	GetExpensesByUser(userId uuid.UUID) (*[]interfaces.ExpenseResultQuery, error)
 	CreateExpense(userId uuid.UUID, payload interfaces.ExpenseInsertDb) (*uuid.UUID, error)
 }

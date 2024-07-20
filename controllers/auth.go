@@ -8,14 +8,22 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
-type IAuthController struct {
-	service *services.IAuthService
+type AuthController[T any] interface {
+	Register() T
+	Login() T
+	Logout() T
+}
+type authController struct {
+	service *services.AuthService
+}
+type FiberAuthController interface {
+	AuthController[fiber.Handler]
 }
 
-func AuthController(service *services.IAuthService) IAuthController {
-	return IAuthController{service}
+func NewFiberAuthController(service *services.AuthService) FiberAuthController {
+	return &authController{service}
 }
-func (s IAuthController) Register() fiber.Handler {
+func (s authController) Register() fiber.Handler {
 	return func(c *fiber.Ctx) error {
 		payload := interfaces.AuthRegisterRequest{}
 		if err := c.BodyParser(&payload); err != nil {
@@ -40,7 +48,7 @@ func (s IAuthController) Register() fiber.Handler {
 		return c.JSON(res)
 	}
 }
-func (s IAuthController) Login() fiber.Handler {
+func (s authController) Login() fiber.Handler {
 	return func(c *fiber.Ctx) error {
 		payload := interfaces.AuthLoginRequest{}
 		if err := c.BodyParser(&payload); err != nil {
@@ -53,7 +61,7 @@ func (s IAuthController) Login() fiber.Handler {
 		return c.JSON(res)
 	}
 }
-func (s IAuthController) Logout() fiber.Handler {
+func (s authController) Logout() fiber.Handler {
 	return func(c *fiber.Ctx) error {
 		return nil
 	}

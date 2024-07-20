@@ -6,7 +6,7 @@ import (
 	"github.com/google/uuid"
 )
 
-type ICustomTagRepository interface {
+type CustomTagRepository interface {
 	GetCustomTagsByUser(ownerId string) (*[]interfaces.CustomTagResultQuery, error)
 	CreateCustomTag(userOwner uuid.UUID, payload interfaces.CustomTagInsertDB) (*uuid.UUID, error)
 }

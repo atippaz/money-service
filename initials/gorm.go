@@ -12,10 +12,10 @@ import (
 )
 
 func InitialGorm(db_gorm *gorm.DB) {
-	spendingRepo = spendingType.SpendingTypeRepositoryGorm(db_gorm)
-	userRepo = user.UserRepositoryGorm(db_gorm)
-	expenseRepo = expense.ExpenseRepositoryGorm(db_gorm)
-	incomeRepo = income.IncomeRepositoryGorm(db_gorm)
-	system_tagRepo = system_tag.SystemTagRepositoryGorm(db_gorm)
-	custom_tagRepo = custom_tag.CustomTagRepositoryGorm(db_gorm)
+	spendingRepo = spendingType.NewGormSpendingTypeRepository(db_gorm)
+	userRepo = user.NewGormUserRepository(db_gorm)
+	expenseRepo = expense.NewGormExpenseRepository(db_gorm)
+	incomeRepo = income.NewGormIncomeRepository(db_gorm)
+	system_tagRepo = system_tag.NewGormSystemTagRepository(db_gorm)
+	custom_tagRepo = custom_tag.NewGormCustomTagRepository(db_gorm)
 }

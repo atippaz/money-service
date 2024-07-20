@@ -7,18 +7,18 @@ import (
 	"github.com/google/uuid"
 )
 
-type IIncomeService struct {
-	repo repositories.IIncomeRepository
+type IncomeService struct {
+	repo repositories.IncomeRepository
 }
 
-func IncomeService(repo repositories.IIncomeRepository) *IIncomeService {
-	return &IIncomeService{repo: repo}
+func NewIncomeService(repo repositories.IncomeRepository) *IncomeService {
+	return &IncomeService{repo: repo}
 }
-func (s *IIncomeService) CreateIncome(id uuid.UUID, payload interfaces.IncomeInsertDb) (*uuid.UUID, error) {
+func (s *IncomeService) CreateIncome(id uuid.UUID, payload interfaces.IncomeInsertDb) (*uuid.UUID, error) {
 	res, err := s.repo.CreateIncome(id, payload)
 	return res, err
 }
-func (s *IIncomeService) GetIncomesByUser(id uuid.UUID) (*[]interfaces.IncomeResultQuery, error) {
+func (s *IncomeService) GetIncomesByUser(id uuid.UUID) (*[]interfaces.IncomeResultQuery, error) {
 	res, err := s.repo.GetIncomesByUser(id)
 	return res, err
 }

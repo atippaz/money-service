@@ -5,15 +5,23 @@ import (
 	repositories "money-service/repositories/spending_type"
 )
 
-type ISpendingTypeService struct {
-	repo repositories.ISpendingTypeRepository
+type SpendingTypeService struct {
+	repo repositories.SpendingTypeRepository
 }
 
-func SpendingTypeService(repo repositories.ISpendingTypeRepository) *ISpendingTypeService {
-	return &ISpendingTypeService{repo: repo}
+func NewSpendingTypeService(repo repositories.SpendingTypeRepository) *SpendingTypeService {
+	return &SpendingTypeService{repo: repo}
 }
 
-func (s *ISpendingTypeService) GetSpendingTypes() (*[]interfaces.SpendingTypeResultQuery, error) {
+func (s *SpendingTypeService) GetSpendingTypes() (*[]interfaces.SpendingTypeResultResponse, error) {
 	res, err := s.repo.GetSpendingTypes()
-	return res, err
+	var results []interfaces.SpendingTypeResultResponse
+	for _, data := range *res {
+		results = append(results, interfaces.SpendingTypeResultResponse{
+			SpendingTypeId: data.SpendingTypeId,
+			NameTh:         data.NameTh,
+			NameEn:         data.NameEn,
+		})
+	}
+	return &results, err
 }

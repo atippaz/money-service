@@ -9,17 +9,17 @@ import (
 	"github.com/google/uuid"
 )
 
-type IUserService struct {
-	repo   repositories.IUserRepository
-	encode utils.IEncodingHelper
+type UserService struct {
+	repo   repositories.UserRepository
+	encode utils.Hasher
 }
 
-func UserService(repo repositories.IUserRepository, encode utils.IEncodingHelper) *IUserService {
+func NewUserService(repo repositories.UserRepository, encode utils.Hasher) *UserService {
 	fmt.Println(encode)
-	return &IUserService{repo: repo, encode: encode}
+	return &UserService{repo: repo, encode: encode}
 }
 
-func (s *IUserService) GetUserById(id uuid.UUID) (*interfaces.UserResultResponse, error) {
+func (s *UserService) GetUserById(id uuid.UUID) (*interfaces.UserResultResponse, error) {
 	result, err := s.repo.GetUserById(id)
 	return &interfaces.UserResultResponse{
 		UserId:      result.UserId,
@@ -33,7 +33,7 @@ func (s *IUserService) GetUserById(id uuid.UUID) (*interfaces.UserResultResponse
 	}, err
 }
 
-func (s *IUserService) GetLoginDataByCredential(credential string) (*interfaces.UserLoginInfoQuery, error) {
+func (s *UserService) GetLoginDataByCredential(credential string) (*interfaces.UserLoginInfoQuery, error) {
 	result, err := s.repo.GetUserByCredential(credential)
 	return &interfaces.UserLoginInfoQuery{
 		UserName: result.UserName,
@@ -43,12 +43,12 @@ func (s *IUserService) GetLoginDataByCredential(credential string) (*interfaces.
 	}, err
 }
 
-func (s *IUserService) DeActiveAccount(id string) (bool, error) {
+func (s *UserService) DeActiveAccount(id string) (bool, error) {
 	res, err := s.repo.DeActiveAccount(id)
 	return res, err
 }
 
-func (s *IUserService) CreateUser(payload interfaces.UserInsertDb) (*uuid.UUID, error) {
+func (s *UserService) CreateUser(payload interfaces.UserInsertDb) (*uuid.UUID, error) {
 	//todo check email
 	//todo check username
 	//todo hash password

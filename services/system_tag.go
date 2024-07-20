@@ -5,15 +5,15 @@ import (
 	repositories "money-service/repositories/system_tag"
 )
 
-type ISystemTagService struct {
-	repo repositories.ISystemTagRepository
+type SystemTagService struct {
+	repo repositories.SystemTagRepository
 }
 
-func SystemTagService(repo repositories.ISystemTagRepository) *ISystemTagService {
-	return &ISystemTagService{repo: repo}
+func NewSystemTagService(repo repositories.SystemTagRepository) *SystemTagService {
+	return &SystemTagService{repo: repo}
 }
 
-func (s *ISystemTagService) GetAllSystemTags() (*[]interfaces.SystemTagResultQuery, error) {
+func (s *SystemTagService) GetAllSystemTags() (*[]interfaces.SystemTagResultQuery, error) {
 	res, err := s.repo.GetAllSystemTags()
 	return res, err
 }

@@ -9,14 +9,24 @@ import (
 	"github.com/google/uuid"
 )
 
-type IIncomeController struct {
-	service *services.IIncomeService
+type IncomeController[T any] interface {
+	CreateIncome() T
+	GetIncomesByUser() T
 }
 
-func IncomeController(service *services.IIncomeService) IIncomeController {
-	return IIncomeController{service}
+type incomeController struct {
+	service *services.IncomeService
 }
-func (s IIncomeController) CreateIncome() fiber.Handler {
+
+// implement
+type FiberIncomeController interface {
+	IncomeController[fiber.Handler]
+}
+
+func NewFiberIncomeController(service *services.IncomeService) FiberIncomeController {
+	return &incomeController{service}
+}
+func (s incomeController) CreateIncome() fiber.Handler {
 	return func(c *fiber.Ctx) error {
 		//todo get uuid from user middleware
 		//todo get payload form body
@@ -30,7 +40,7 @@ func (s IIncomeController) CreateIncome() fiber.Handler {
 		return c.JSON(res)
 	}
 }
-func (s IIncomeController) GetIncomesByUser() fiber.Handler {
+func (s incomeController) GetIncomesByUser() fiber.Handler {
 	return func(c *fiber.Ctx) error {
 		// get uuid from user middleware
 		id := uuid.New()

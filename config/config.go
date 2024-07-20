@@ -9,6 +9,7 @@ import (
 )
 
 var UserId = uuid.MustParse("e8bc8014-4a5a-4e91-a6d2-3b5b6f77d3e0")
+var cfg = LoadConfig()
 
 type Config struct {
 	SERVER_PORT string
@@ -18,6 +19,7 @@ type Config struct {
 	PASSWORD    string
 	DB_PORT     string
 	API_VERSION string
+	JWTSECERT   string
 }
 
 func LoadConfig() *Config {
@@ -25,7 +27,7 @@ func LoadConfig() *Config {
 		log.Fatalf("Error loading .env file: %v", err)
 	}
 
-	cfg := &Config{
+	return &Config{
 		SERVER_PORT: os.Getenv("SERVER_PORT"),
 		HOST:        os.Getenv("HOST"),
 		USER:        os.Getenv("USER"),
@@ -33,7 +35,6 @@ func LoadConfig() *Config {
 		PASSWORD:    os.Getenv("PASSWORD"),
 		DB_PORT:     os.Getenv("DB_PORT"),
 		API_VERSION: os.Getenv("API_VERSION"),
+		JWTSECERT:   os.Getenv("SECERT_KEY"),
 	}
-
-	return cfg
 }

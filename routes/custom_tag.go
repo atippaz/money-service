@@ -7,9 +7,9 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
-func CustomTagRoute(app fiber.Router, controllers controllers.ICustomTagController) {
-	api := app.Group("/custom_tags")
-	api.Use(middlewares.JWTMiddleware())
+func CustomTagRoute(app fiber.Router, controllers controllers.FiberCustomTagController, jwtMiddleware middlewares.JWTMiddleware) {
+	api := app.Group("/custom-tags")
+	api.Use(jwtMiddleware.MiddleWare())
 	api.Get("/", controllers.GetCustomTagsByUser())
 	api.Post("/", controllers.CreateCustomTag())
 

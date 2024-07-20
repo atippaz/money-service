@@ -7,14 +7,23 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
-type ISpendingTypeController struct {
-	service *services.ISpendingTypeService
+type SpendingTypeController[T any] interface {
+	GetSpendingHandler() T
 }
 
-func SpendingTypeController(service *services.ISpendingTypeService) ISpendingTypeController {
-	return ISpendingTypeController{service}
+type spendingTypeController struct {
+	service *services.SpendingTypeService
 }
-func (s ISpendingTypeController) GetSpendingHandler() fiber.Handler {
+
+// implement
+type FiberSpendingTypeController interface {
+	SpendingTypeController[fiber.Handler]
+}
+
+func NewFiberSpendingTypeController(service *services.SpendingTypeService) FiberSpendingTypeController {
+	return &spendingTypeController{service}
+}
+func (s spendingTypeController) GetSpendingHandler() fiber.Handler {
 	return func(c *fiber.Ctx) error {
 		res, err := s.service.GetSpendingTypes()
 		fmt.Print(res)

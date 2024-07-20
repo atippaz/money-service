@@ -12,7 +12,7 @@ type incomeRepositoryGorm struct {
 	db *gorm.DB
 }
 
-func IncomeRepositoryGorm(db *gorm.DB) IIncomeRepository {
+func NewGormIncomeRepository(db *gorm.DB) IncomeRepository {
 	return &incomeRepositoryGorm{db: db}
 }
 func (r *incomeRepositoryGorm) CreateIncome(id uuid.UUID, payload interfaces.IncomeInsertDb) (*uuid.UUID, error) {

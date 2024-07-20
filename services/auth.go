@@ -6,22 +6,23 @@ import (
 	"money-service/utils"
 	"time"
 
+	"github.com/golang-jwt/jwt/v4"
 	"github.com/google/uuid"
 )
 
-type IAuthService struct {
-	userService  *IUserService
-	encodeHelper utils.IEncodingHelper
-	jwtHelper    utils.IJwtHelper
+type AuthService struct {
+	userService *UserService
+	hasher      utils.Hasher
+	jwt         utils.Jwt
 }
 
-func AuthService(userService *IUserService, encodeHelper utils.IEncodingHelper, jwtHelper utils.IJwtHelper) *IAuthService {
-	return &IAuthService{userService: userService, encodeHelper: encodeHelper, jwtHelper: jwtHelper}
+func NewAuthService(userService *UserService, hasher utils.Hasher, jwt utils.Jwt) *AuthService {
+	return &AuthService{userService: userService, hasher: hasher, jwt: jwt}
 }
 
 var loginWhiteLists string
 
-func (s *IAuthService) Register(payload interfaces.AuthRegisterInsert) (*uuid.UUID, error) {
+func (s *AuthService) Register(payload interfaces.AuthRegisterInsert) (*uuid.UUID, error) {
 	result, err := s.userService.CreateUser(interfaces.UserInsertDb{
 		UserName:    payload.UserName,
 		Email:       payload.Email,
@@ -34,21 +35,27 @@ func (s *IAuthService) Register(payload interfaces.AuthRegisterInsert) (*uuid.UU
 	return result, err
 }
 
-func (s *IAuthService) Login(credential, password string) (*string, error) {
+func (s *AuthService) Login(credential, password string) (*string, error) {
 	userSecureData, err := s.userService.GetLoginDataByCredential(credential)
 	if err != nil {
 		return nil, err
 	}
 	fmt.Println(userSecureData)
-	if !s.encodeHelper.ComparePassword(password, userSecureData.Password) {
+	if !s.hasher.ComparePassword(password, userSecureData.Password) {
 
 		return nil, err
 	}
-	jwt, err := s.jwtHelper.CreateJWT(&interfaces.AuthClaims{
+
+	claims := interfaces.AuthClaims{
 		UserId:   userSecureData.UserId,
 		Username: userSecureData.UserName,
 		Email:    userSecureData.Email,
-	}, <-time.After(50000))
+		RegisteredClaims: jwt.RegisteredClaims{
+			ExpiresAt: jwt.NewNumericDate(time.Now().Add(time.Hour * 24)),
+		},
+	}
+	jwt, err := s.jwt.CreateJWT(&claims)
+
 	if err != nil {
 		return nil, err
 	}

@@ -12,7 +12,7 @@ type spendingRepositoryGorm struct {
 	db *gorm.DB
 }
 
-func SpendingTypeRepositoryGorm(db *gorm.DB) ISpendingTypeRepository {
+func NewGormSpendingTypeRepository(db *gorm.DB) SpendingTypeRepository {
 	return &spendingRepositoryGorm{db: db}
 }
 

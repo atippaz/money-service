@@ -2,43 +2,65 @@ package middlewares
 
 import (
 	"fmt"
-	"money-service/config"
 	"money-service/interfaces"
+	"money-service/utils"
+	"strings"
 
 	"github.com/gofiber/fiber/v2"
-	"github.com/golang-jwt/jwt"
 )
 
-// JWTMiddleware function to check token
-func JWTMiddleware() fiber.Handler {
+type JWTMiddleware interface {
+	MiddleWare() fiber.Handler
+}
+type jwtMiddleware struct {
+	jwt utils.Jwt
+}
+
+func NewJwtMiddleware(jwt utils.Jwt) JWTMiddleware {
+	return &jwtMiddleware{jwt: jwt}
+}
+func (s jwtMiddleware) MiddleWare() fiber.Handler {
 	return func(c *fiber.Ctx) error {
-		// Get the token from the header
-		tokenString := c.Get("Authorization")
-		if tokenString == "" {
-			fmt.Println("no token")
-			// return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{
-			// 	"message": "Missing or malformed JWT",
-			// })
+
+		authHeader := c.Get("Authorization")
+		if authHeader == "" {
+			return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{
+				"message": "Missing or malformed JWT",
+			})
 		}
+
+		if !strings.HasPrefix(authHeader, "Bearer ") {
+			return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{
+				"message": "Missing or malformed JWT",
+			})
+		}
+		parts := strings.SplitN(authHeader, " ", 2)
+		if len(parts) != 2 {
+			return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{
+				"message": "Missing or malformed JWT",
+			})
+		}
+		tokenString := parts[1]
+
 		fmt.Println(tokenString)
 
-		claims := &interfaces.AuthClaims{}
-		token, err := jwt.ParseWithClaims(tokenString, claims, func(token *jwt.Token) (interface{}, error) {
-			if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
-				return nil, fiber.NewError(fiber.StatusUnauthorized, "Unexpected signing method")
-			}
-			return []byte("test"), nil
-		})
-		fmt.Println(token)
+		user, err := s.jwt.DecodeJWT(tokenString)
+		fmt.Println(err)
 
-		if err != nil || !token.Valid {
+		if err != nil {
 			return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{
 				"message": "Invalid or expired JWT",
 			})
 		}
+		claim := interfaces.AuthClaims{
+			Username: user.Username,
+			Email:    user.Email,
+			UserId:   user.UserId,
+		}
+		fmt.Println("sss")
+		fmt.Println(claim)
 
-		c.Locals("user", config.UserId)
-
+		c.Locals("user", &claim)
 		return c.Next()
 	}
 }

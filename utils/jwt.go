@@ -2,35 +2,27 @@ package utils
 
 import (
 	"errors"
-	"fmt"
-	"time"
+	"money-service/interfaces"
 
 	"github.com/golang-jwt/jwt/v4"
 )
 
-type IJwtHelper interface {
-	CreateJWT(claims interface{}, expirationTime time.Time) (string, error)
-	DecodeJWT(tokenStr string) (interface{}, error)
+type Jwt interface {
+	CreateJWT(claims *interfaces.AuthClaims) (string, error)
+	DecodeJWT(tokenStr string) (*interfaces.AuthClaims, error)
 }
 
-type jwtHelper struct {
+type _jwt struct {
+	JwtKey string
 }
 
-var jwtKey = "test"
-
-// os.Getenv("SECERT_KEY")
-
-func JwtHelper() IJwtHelper {
-	return &jwtHelper{}
+func NewJwt(JwtKey string) Jwt {
+	return &_jwt{JwtKey}
 }
 
-func (j *jwtHelper) CreateJWT(claims interface{}, expirationTime time.Time) (string, error) {
-	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
-		"data": claims,
-		"exp":  expirationTime.Unix(),
-	})
-	fmt.Println("ss", jwtKey)
-	tokenString, err := token.SignedString([]byte(jwtKey))
+func (j *_jwt) CreateJWT(claims *interfaces.AuthClaims) (string, error) {
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
+	tokenString, err := token.SignedString([]byte(j.JwtKey))
 	if err != nil {
 		return "", err
 	}
@@ -38,23 +30,20 @@ func (j *jwtHelper) CreateJWT(claims interface{}, expirationTime time.Time) (str
 	return tokenString, nil
 }
 
-func (j *jwtHelper) DecodeJWT(tokenStr string) (interface{}, error) {
-	token, err := jwt.Parse(tokenStr, func(token *jwt.Token) (interface{}, error) {
+func (j *_jwt) DecodeJWT(tokenStr string) (*interfaces.AuthClaims, error) {
+	token, err := jwt.ParseWithClaims(tokenStr, &interfaces.AuthClaims{}, func(token *jwt.Token) (interface{}, error) {
 		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
 			return nil, errors.New("unexpected signing method")
 		}
-		return jwtKey, nil
+		return []byte(j.JwtKey), nil
 	})
 
 	if err != nil {
 		return nil, err
 	}
 
-	if claims, ok := token.Claims.(jwt.MapClaims); ok && token.Valid {
-		if data, ok := claims["data"].(map[string]interface{}); ok {
-			return data, nil
-		}
+	if claims, ok := token.Claims.(*interfaces.AuthClaims); ok && token.Valid {
+		return claims, nil
 	}
-
 	return nil, errors.New("invalid token")
 }

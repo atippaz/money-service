@@ -2,6 +2,6 @@ package repositories
 
 import "money-service/interfaces"
 
-type ISpendingTypeRepository interface {
+type SpendingTypeRepository interface {
 	GetSpendingTypes() (*[]interfaces.SpendingTypeResultQuery, error)
 }

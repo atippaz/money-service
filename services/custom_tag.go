@@ -7,20 +7,20 @@ import (
 	"github.com/google/uuid"
 )
 
-type ICustomTagService struct {
-	repo repositories.ICustomTagRepository
+type CustomTagService struct {
+	repo repositories.CustomTagRepository
 }
 
-func CustomTagService(repo repositories.ICustomTagRepository) *ICustomTagService {
-	return &ICustomTagService{repo: repo}
+func NewCustomTagService(repo repositories.CustomTagRepository) *CustomTagService {
+	return &CustomTagService{repo: repo}
 }
 
-func (s *ICustomTagService) GetCustomTagsByUser(id string) (*[]interfaces.CustomTagResultQuery, error) {
+func (s *CustomTagService) GetCustomTagsByUser(id string) (*[]interfaces.CustomTagResultQuery, error) {
 	res, err := s.repo.GetCustomTagsByUser(id)
 	return res, err
 }
 
-func (s *ICustomTagService) CreateCustomTag(id uuid.UUID) (*uuid.UUID, error) {
+func (s *CustomTagService) CreateCustomTag(id uuid.UUID) (*uuid.UUID, error) {
 	res, err := s.repo.CreateCustomTag(id, interfaces.CustomTagInsertDB{
 		NameTh:         "รถเมย์",
 		NameEn:         "bus",

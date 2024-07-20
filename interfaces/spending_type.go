@@ -7,3 +7,8 @@ type SpendingTypeResultQuery struct {
 	NameTh         string
 	NameEn         string
 }
+type SpendingTypeResultResponse struct {
+	SpendingTypeId uuid.UUID `json:"spendingTypeId"`
+	NameTh         string    `json:"nameTh"`
+	NameEn         string    `json:"nameEng"`
+}

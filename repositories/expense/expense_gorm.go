@@ -1,6 +1,7 @@
 package repositories
 
 import (
+	"fmt"
 	"money-service/entities"
 	"money-service/interfaces"
 
@@ -12,7 +13,7 @@ type expenseRepositoryGorm struct {
 	db *gorm.DB
 }
 
-func ExpenseRepositoryGorm(db *gorm.DB) IExpenseRepository {
+func NewGormExpenseRepository(db *gorm.DB) ExpenseRepository {
 	return &expenseRepositoryGorm{db: db}
 }
 
@@ -20,9 +21,10 @@ func (r *expenseRepositoryGorm) GetExpensesByUser(userId uuid.UUID) (*[]interfac
 	var results []entities.ExpensesEntity
 	db := r.db
 
-	if err := db.Select("spending_type_id, name_th, name_en").First(&results).Error; err != nil {
+	if err := db.Select("*").Find(&results).Error; err != nil {
 		return nil, err
 	}
+	fmt.Println(results)
 	var expenseResults []interfaces.ExpenseResultQuery
 	for _, result := range results {
 		expenseResults = append(expenseResults, interfaces.ExpenseResultQuery{

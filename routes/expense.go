@@ -7,9 +7,9 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
-func ExpenseRoute(app fiber.Router, controllers controllers.IExpenseController) {
+func ExpenseRoute(app fiber.Router, controllers controllers.FiberExpenseController, jwtMiddleware middlewares.JWTMiddleware) {
 	api := app.Group("/expenses")
-	api.Use(middlewares.JWTMiddleware())
+	api.Use(jwtMiddleware.MiddleWare())
 	api.Get("/", controllers.GetExpensesByUser())
 	api.Post("/", controllers.CreateExpense())
 	api.Patch("/", controllers.CreateExpense())

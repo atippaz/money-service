@@ -6,7 +6,7 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
-func SystemTagRoute(app fiber.Router, controllers controllers.ISystemTagController) {
-	api := app.Group("/system_tags")
+func SystemTagRoute(app fiber.Router, controllers controllers.FiberSystemTagController) {
+	api := app.Group("/system-tags")
 	api.Get("/", controllers.GetAllSystemTags())
 }

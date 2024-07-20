@@ -8,14 +8,21 @@ import (
 	"github.com/google/uuid"
 )
 
-type IUserController struct {
-	service *services.IUserService
+type UserController[T any] interface {
+	GetUserById() T
+	DeActiveAccount() T
+}
+type userController struct {
+	service *services.UserService
+}
+type FiberUserController interface {
+	UserController[fiber.Handler]
 }
 
-func UserController(service *services.IUserService) IUserController {
-	return IUserController{service}
+func NewFiberUserController(service *services.UserService) FiberUserController {
+	return &userController{service}
 }
-func (s IUserController) GetUserById() fiber.Handler {
+func (s userController) GetUserById() fiber.Handler {
 	return func(c *fiber.Ctx) error {
 		id := c.Locals("user").(uuid.UUID)
 		res, err := s.service.GetUserById(id)
@@ -26,7 +33,7 @@ func (s IUserController) GetUserById() fiber.Handler {
 		return c.JSON(res)
 	}
 }
-func (s IUserController) DeActiveAccount() fiber.Handler {
+func (s userController) DeActiveAccount() fiber.Handler {
 	return func(c *fiber.Ctx) error {
 		// todo get id form middle ware
 		id := ""

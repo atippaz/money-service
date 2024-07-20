@@ -12,7 +12,7 @@ type customTagRepositoryGorm struct {
 	db *gorm.DB
 }
 
-func CustomTagRepositoryGorm(db *gorm.DB) ICustomTagRepository {
+func NewGormCustomTagRepository(db *gorm.DB) CustomTagRepository {
 	return &customTagRepositoryGorm{db: db}
 }
 func (r *customTagRepositoryGorm) CreateCustomTag(userOwner uuid.UUID, payload interfaces.CustomTagInsertDB) (*uuid.UUID, error) {

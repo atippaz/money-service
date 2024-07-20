@@ -9,7 +9,7 @@ type spendingRepositoryTest struct {
 	db config.DummySpendingInstance
 }
 
-func SpendingTypeRepositoryTest(db config.DummySpendingInstance) ISpendingTypeRepository {
+func GormTestSpendingTypeRepository(db config.DummySpendingInstance) SpendingTypeRepository {
 	return &spendingRepositoryTest{db: db}
 }
 

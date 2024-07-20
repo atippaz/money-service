@@ -6,7 +6,7 @@ import (
 	"github.com/google/uuid"
 )
 
-type IIncomeRepository interface {
+type IncomeRepository interface {
 	GetIncomesByUser(userId uuid.UUID) (*[]interfaces.IncomeResultQuery, error)
 	CreateIncome(id uuid.UUID, payload interfaces.IncomeInsertDb) (*uuid.UUID, error)
 }

@@ -8,17 +8,28 @@ import (
 	"github.com/google/uuid"
 )
 
-type IExpenseController struct {
-	service *services.IExpenseService
+type ExpenseController[T fiber.Handler] interface {
+	GetExpensesByUser() T
+	CreateExpense() T
 }
 
-func ExpenseController(service *services.IExpenseService) IExpenseController {
-	return IExpenseController{service}
+type expenseController struct {
+	service *services.ExpenseService
 }
-func (s IExpenseController) GetExpensesByUser() fiber.Handler {
+
+// implement
+type FiberExpenseController interface {
+	ExpenseController[fiber.Handler]
+}
+
+func NewFiberExpenseController(service *services.ExpenseService) FiberExpenseController {
+	return &expenseController{service}
+}
+
+func (s expenseController) GetExpensesByUser() fiber.Handler {
 	return func(c *fiber.Ctx) error {
-		userId := ""
-		res, err := s.service.GetExpensesByUser(uuid.MustParse(userId))
+		claims := c.Locals("user").(*interfaces.AuthClaims)
+		res, err := s.service.GetExpensesByUser(claims.UserId)
 		if err != nil {
 			return c.Status(fiber.StatusInternalServerError).SendString(err.Error())
 		}
@@ -26,7 +37,7 @@ func (s IExpenseController) GetExpensesByUser() fiber.Handler {
 	}
 }
 
-func (s IExpenseController) CreateExpense() fiber.Handler {
+func (s expenseController) CreateExpense() fiber.Handler {
 	return func(c *fiber.Ctx) error {
 		var payload interfaces.ExpenseInsertRequest
 		if err := c.BodyParser(&payload); err != nil {

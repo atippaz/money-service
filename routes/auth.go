@@ -10,7 +10,7 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
-func AuthRoute(app fiber.Router, controllers controllers.IAuthController) {
+func AuthRoute(app fiber.Router, controllers controllers.FiberAuthController) {
 	api := app.Group("/auth")
 	api.Post("/login", controllers.Login())
 	api.Post("/register", controllers.Register())
