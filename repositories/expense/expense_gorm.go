@@ -3,7 +3,6 @@ package repositories
 import (
 	"fmt"
 	"money-service/entities"
-	"money-service/interfaces"
 
 	"github.com/google/uuid"
 	"gorm.io/gorm"
@@ -17,7 +16,7 @@ func NewGormExpenseRepository(db *gorm.DB) ExpenseRepository {
 	return &expenseRepositoryGorm{db: db}
 }
 
-func (r *expenseRepositoryGorm) GetExpensesByUser(userId uuid.UUID) (*[]interfaces.ExpenseResultQuery, error) {
+func (r *expenseRepositoryGorm) GetExpensesByUser(userId uuid.UUID) (*[]ExpenseResultQuery, error) {
 	var results []entities.ExpensesEntity
 	db := r.db
 
@@ -25,16 +24,16 @@ func (r *expenseRepositoryGorm) GetExpensesByUser(userId uuid.UUID) (*[]interfac
 		return nil, err
 	}
 	fmt.Println(results)
-	var expenseResults []interfaces.ExpenseResultQuery
+	var expenseResults []ExpenseResultQuery
 	for _, result := range results {
-		expenseResults = append(expenseResults, interfaces.ExpenseResultQuery{
+		expenseResults = append(expenseResults, ExpenseResultQuery{
 			ExpenseId: result.ExpenseId,
 		})
 	}
 
 	return &expenseResults, nil
 }
-func (r *expenseRepositoryGorm) CreateExpense(userId uuid.UUID, payload interfaces.ExpenseInsertDb) (*uuid.UUID, error) {
+func (r *expenseRepositoryGorm) CreateExpense(userId uuid.UUID, payload ExpenseInsertDb) (*uuid.UUID, error) {
 
 	return nil, nil
 }

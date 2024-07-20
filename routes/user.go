@@ -2,7 +2,7 @@ package routes
 
 import (
 	"fmt"
-	"money-service/controllers"
+	controllers "money-service/controllers/user"
 
 	"github.com/gofiber/fiber/v2"
 )

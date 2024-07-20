@@ -2,25 +2,13 @@ package controllers
 
 import (
 	"fmt"
-	"money-service/services"
+	customTagSevice "money-service/services/custom_tag"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/google/uuid"
 )
 
-type CustomTagController[T any] interface {
-	GetCustomTagsByUser() T
-	CreateCustomTag() T
-}
-type customTagController struct {
-	service *services.CustomTagService
-}
-
-type FiberCustomTagController interface {
-	CustomTagController[fiber.Handler]
-}
-
-func NewFiberCustomTagController(service *services.CustomTagService) FiberCustomTagController {
+func NewFiberCustomTagController(service customTagSevice.CustomTagService) FiberCustomTagController {
 	return &customTagController{service}
 }
 func (s customTagController) GetCustomTagsByUser() fiber.Handler {

@@ -1,7 +1,14 @@
 package repositories
 
-import "money-service/interfaces"
+import "github.com/google/uuid"
 
 type SystemTagRepository interface {
-	GetAllSystemTags() (*[]interfaces.SystemTagResultQuery, error)
+	GetAllSystemTags() (*[]SystemTagResultQuery, error)
+}
+type SystemTagResultQuery struct {
+	TagId          uuid.UUID
+	NameTh         string
+	NameEn         string
+	IsActive       bool
+	SpendingTypeId uuid.UUID
 }

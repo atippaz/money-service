@@ -2,24 +2,13 @@ package controllers
 
 import (
 	"fmt"
-	"money-service/services"
+	userService "money-service/services/user"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/google/uuid"
 )
 
-type UserController[T any] interface {
-	GetUserById() T
-	DeActiveAccount() T
-}
-type userController struct {
-	service *services.UserService
-}
-type FiberUserController interface {
-	UserController[fiber.Handler]
-}
-
-func NewFiberUserController(service *services.UserService) FiberUserController {
+func NewFiberUserController(service userService.UserService) FiberUserController {
 	return &userController{service}
 }
 func (s userController) GetUserById() fiber.Handler {

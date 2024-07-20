@@ -1,12 +1,26 @@
 package repositories
 
 import (
-	"money-service/interfaces"
+	"time"
 
 	"github.com/google/uuid"
+	"github.com/shopspring/decimal"
 )
 
 type ExpenseRepository interface {
-	GetExpensesByUser(userId uuid.UUID) (*[]interfaces.ExpenseResultQuery, error)
-	CreateExpense(userId uuid.UUID, payload interfaces.ExpenseInsertDb) (*uuid.UUID, error)
+	GetExpensesByUser(userId uuid.UUID) (*[]ExpenseResultQuery, error)
+	CreateExpense(userId uuid.UUID, payload ExpenseInsertDb) (*uuid.UUID, error)
+}
+
+type ExpenseResultQuery struct {
+	ExpenseId   uuid.UUID
+	CreatedDate time.Time
+	TagId       uuid.UUID
+	Value       decimal.Decimal
+	UserOwner   uuid.UUID
+}
+
+type ExpenseInsertDb struct {
+	TagId uuid.UUID
+	Value decimal.Decimal
 }

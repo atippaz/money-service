@@ -2,26 +2,19 @@ package services
 
 import (
 	"fmt"
-	"money-service/interfaces"
-	repositories "money-service/repositories/user"
-	"money-service/utils"
+	userRepositories "money-service/repositories/user"
+	Hasher "money-service/utils/hasher"
 
 	"github.com/google/uuid"
 )
 
-type UserService struct {
-	repo   repositories.UserRepository
-	encode utils.Hasher
+func NewUserService(repo userRepositories.UserRepository, encode Hasher.Hasher) UserService {
+	return &userService{repo: repo, encode: encode}
 }
 
-func NewUserService(repo repositories.UserRepository, encode utils.Hasher) *UserService {
-	fmt.Println(encode)
-	return &UserService{repo: repo, encode: encode}
-}
-
-func (s *UserService) GetUserById(id uuid.UUID) (*interfaces.UserResultResponse, error) {
+func (s *userService) GetUserById(id uuid.UUID) (*UserInfo, error) {
 	result, err := s.repo.GetUserById(id)
-	return &interfaces.UserResultResponse{
+	return &UserInfo{
 		UserId:      result.UserId,
 		UserName:    result.UserName,
 		Email:       result.Email,
@@ -33,9 +26,9 @@ func (s *UserService) GetUserById(id uuid.UUID) (*interfaces.UserResultResponse,
 	}, err
 }
 
-func (s *UserService) GetLoginDataByCredential(credential string) (*interfaces.UserLoginInfoQuery, error) {
+func (s *userService) GetLoginDataByCredential(credential string) (*UserLoginInfo, error) {
 	result, err := s.repo.GetUserByCredential(credential)
-	return &interfaces.UserLoginInfoQuery{
+	return &UserLoginInfo{
 		UserName: result.UserName,
 		Email:    result.Email,
 		Password: result.Password,
@@ -43,12 +36,12 @@ func (s *UserService) GetLoginDataByCredential(credential string) (*interfaces.U
 	}, err
 }
 
-func (s *UserService) DeActiveAccount(id string) (bool, error) {
+func (s *userService) DeActiveAccount(id string) (bool, error) {
 	res, err := s.repo.DeActiveAccount(id)
 	return res, err
 }
 
-func (s *UserService) CreateUser(payload interfaces.UserInsertDb) (*uuid.UUID, error) {
+func (s *userService) CreateUser(payload UserResult) (*uuid.UUID, error) {
 	//todo check email
 	//todo check username
 	//todo hash password
@@ -60,7 +53,7 @@ func (s *UserService) CreateUser(payload interfaces.UserInsertDb) (*uuid.UUID, e
 	if err != nil {
 		return nil, err
 	}
-	res, err := s.repo.CreateUser(interfaces.UserInsertDb{
+	res, err := s.repo.CreateUser(userRepositories.UserInsertDb{
 		UserName:    payload.UserName,
 		Email:       payload.Email,
 		LastName:    payload.LastName,

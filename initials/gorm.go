@@ -16,6 +16,6 @@ func InitialGorm(db_gorm *gorm.DB) {
 	userRepo = user.NewGormUserRepository(db_gorm)
 	expenseRepo = expense.NewGormExpenseRepository(db_gorm)
 	incomeRepo = income.NewGormIncomeRepository(db_gorm)
-	system_tagRepo = system_tag.NewGormSystemTagRepository(db_gorm)
-	custom_tagRepo = custom_tag.NewGormCustomTagRepository(db_gorm)
+	systemTagRepo = system_tag.NewGormSystemTagRepository(db_gorm)
+	customTagRepo = custom_tag.NewGormCustomTagRepository(db_gorm)
 }

@@ -1,7 +1,12 @@
 package repositories
 
-import "money-service/interfaces"
+import "github.com/google/uuid"
 
 type SpendingTypeRepository interface {
-	GetSpendingTypes() (*[]interfaces.SpendingTypeResultQuery, error)
+	GetSpendingTypes() (*[]SpendingTypeResultQuery, error)
+}
+type SpendingTypeResultQuery struct {
+	SpendingTypeId uuid.UUID
+	NameTh         string
+	NameEn         string
 }

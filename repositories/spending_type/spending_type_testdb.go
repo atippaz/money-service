@@ -2,7 +2,6 @@ package repositories
 
 import (
 	"money-service/config"
-	"money-service/interfaces"
 )
 
 type spendingRepositoryTest struct {
@@ -13,13 +12,13 @@ func GormTestSpendingTypeRepository(db config.DummySpendingInstance) SpendingTyp
 	return &spendingRepositoryTest{db: db}
 }
 
-func (r *spendingRepositoryTest) GetSpendingTypes() (*[]interfaces.SpendingTypeResultQuery, error) {
+func (r *spendingRepositoryTest) GetSpendingTypes() (*[]SpendingTypeResultQuery, error) {
 
 	db := r.db
 	results := db.GetSpending()
-	var spendingTypeResults []interfaces.SpendingTypeResultQuery
+	var spendingTypeResults []SpendingTypeResultQuery
 	for _, result := range results {
-		spendingTypeResults = append(spendingTypeResults, interfaces.SpendingTypeResultQuery{
+		spendingTypeResults = append(spendingTypeResults, SpendingTypeResultQuery{
 			SpendingTypeId: result.ID,
 			NameTh:         result.Name,
 			NameEn:         result.Name,

@@ -6,13 +6,6 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
-type Hasher interface {
-	ComparePassword(password, hash string) bool
-	Hashing(text *string) (string, error)
-}
-type hasher struct {
-}
-
 func NewHasher() Hasher {
 	return &hasher{}
 }

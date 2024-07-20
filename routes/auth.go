@@ -5,7 +5,7 @@ package routes
 // route logout // backlist token
 
 import (
-	"money-service/controllers"
+	controllers "money-service/controllers/auth"
 
 	"github.com/gofiber/fiber/v2"
 )

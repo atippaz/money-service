@@ -3,24 +3,12 @@ package controllers
 import (
 	"fmt"
 	"money-service/interfaces"
-	"money-service/services"
+	authSevice "money-service/services/auth"
 
 	"github.com/gofiber/fiber/v2"
 )
 
-type AuthController[T any] interface {
-	Register() T
-	Login() T
-	Logout() T
-}
-type authController struct {
-	service *services.AuthService
-}
-type FiberAuthController interface {
-	AuthController[fiber.Handler]
-}
-
-func NewFiberAuthController(service *services.AuthService) FiberAuthController {
+func NewFiberAuthController(service authSevice.AuthService) FiberAuthController {
 	return &authController{service}
 }
 func (s authController) Register() fiber.Handler {
@@ -31,7 +19,7 @@ func (s authController) Register() fiber.Handler {
 		}
 		fmt.Println(payload)
 
-		res, err := s.service.Register(interfaces.AuthRegisterInsert{
+		res, err := s.service.Register(authSevice.AuthRegisterInsert{
 			UserName:    payload.UserName,
 			Email:       payload.Email,
 			LastName:    payload.LastName,

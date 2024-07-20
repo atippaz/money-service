@@ -1,24 +1,12 @@
 package controllers
 
 import (
-	"money-service/services"
+	SystemTagService "money-service/services/system_tag"
 
 	"github.com/gofiber/fiber/v2"
 )
 
-type SystemTagController[T any] interface {
-	GetAllSystemTags() T
-}
-type systemTagController struct {
-	service *services.SystemTagService
-}
-
-// implement
-type FiberSystemTagController interface {
-	SystemTagController[fiber.Handler]
-}
-
-func NewFiberSystemTagController(service *services.SystemTagService) FiberSystemTagController {
+func NewFiberSystemTagController(service SystemTagService.SystemTagService) FiberSystemTagController {
 	return &systemTagController{service}
 }
 func (s systemTagController) GetAllSystemTags() fiber.Handler {

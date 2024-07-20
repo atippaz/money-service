@@ -1,7 +1,7 @@
 package routes
 
 import (
-	"money-service/controllers"
+	controllers "money-service/controllers/custom_tag"
 	"money-service/middlewares"
 
 	"github.com/gofiber/fiber/v2"

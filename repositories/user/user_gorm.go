@@ -3,7 +3,6 @@ package repositories
 import (
 	"fmt"
 	"money-service/entities"
-	"money-service/interfaces"
 
 	"github.com/google/uuid"
 	"gorm.io/gorm"
@@ -17,7 +16,7 @@ func NewGormUserRepository(db *gorm.DB) UserRepository {
 	return &userRepositoryGorm{db: db}
 }
 
-func (r *userRepositoryGorm) CreateUser(payload interfaces.UserInsertDb) (*uuid.UUID, error) {
+func (r *userRepositoryGorm) CreateUser(payload UserInsertDb) (*uuid.UUID, error) {
 	db := r.db
 	newUser := entities.UserEntity{
 		UserId:      uuid.New(),
@@ -49,7 +48,7 @@ func (r *userRepositoryGorm) DeActiveAccount(id string) (bool, error) {
 	return true, nil
 }
 
-func (r *userRepositoryGorm) GetUserById(id uuid.UUID) (*interfaces.UserResultQuery, error) {
+func (r *userRepositoryGorm) GetUserById(id uuid.UUID) (*UserResultQuery, error) {
 	var result entities.UserEntity
 	result.UserId = id
 	db := r.db
@@ -57,7 +56,7 @@ func (r *userRepositoryGorm) GetUserById(id uuid.UUID) (*interfaces.UserResultQu
 	if err := db.Select("*").First(&result).Where("is_active", true).Error; err != nil {
 		return nil, err
 	}
-	var spendingTypeResults = interfaces.UserResultQuery{
+	var spendingTypeResults = UserResultQuery{
 		UserId:      result.UserId,
 		UserName:    result.UserName,
 		Email:       result.Email,
@@ -71,7 +70,7 @@ func (r *userRepositoryGorm) GetUserById(id uuid.UUID) (*interfaces.UserResultQu
 	return &spendingTypeResults, nil
 }
 
-func (r *userRepositoryGorm) GetUserByCredential(credential string) (*interfaces.UserResultQuery, error) {
+func (r *userRepositoryGorm) GetUserByCredential(credential string) (*UserResultQuery, error) {
 	var result entities.UserEntity
 	db := r.db
 
@@ -79,7 +78,7 @@ func (r *userRepositoryGorm) GetUserByCredential(credential string) (*interfaces
 		return nil, err
 	}
 
-	var spendingTypeResults = interfaces.UserResultQuery{
+	var spendingTypeResults = UserResultQuery{
 		UserId:      result.UserId,
 		UserName:    result.UserName,
 		Email:       result.Email,

@@ -2,8 +2,7 @@ package middlewares
 
 import (
 	"fmt"
-	"money-service/interfaces"
-	"money-service/utils"
+	Jwt "money-service/utils/jwt"
 	"strings"
 
 	"github.com/gofiber/fiber/v2"
@@ -13,10 +12,10 @@ type JWTMiddleware interface {
 	MiddleWare() fiber.Handler
 }
 type jwtMiddleware struct {
-	jwt utils.Jwt
+	jwt Jwt.Jwt
 }
 
-func NewJwtMiddleware(jwt utils.Jwt) JWTMiddleware {
+func NewJwtMiddleware(jwt Jwt.Jwt) JWTMiddleware {
 	return &jwtMiddleware{jwt: jwt}
 }
 func (s jwtMiddleware) MiddleWare() fiber.Handler {
@@ -52,7 +51,7 @@ func (s jwtMiddleware) MiddleWare() fiber.Handler {
 				"message": "Invalid or expired JWT",
 			})
 		}
-		claim := interfaces.AuthClaims{
+		claim := Jwt.AuthClaims{
 			Username: user.Username,
 			Email:    user.Email,
 			UserId:   user.UserId,

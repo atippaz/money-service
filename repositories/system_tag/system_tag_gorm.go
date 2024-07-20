@@ -3,7 +3,6 @@ package repositories
 import (
 	"fmt"
 	"money-service/entities"
-	"money-service/interfaces"
 
 	"gorm.io/gorm"
 )
@@ -16,7 +15,7 @@ func NewGormSystemTagRepository(db *gorm.DB) SystemTagRepository {
 	return &systemTagRepositoryGorm{db: db}
 }
 
-func (r *systemTagRepositoryGorm) GetAllSystemTags() (*[]interfaces.SystemTagResultQuery, error) {
+func (r *systemTagRepositoryGorm) GetAllSystemTags() (*[]SystemTagResultQuery, error) {
 	var results []entities.SystemTagEntity
 	db := r.db
 
@@ -24,9 +23,9 @@ func (r *systemTagRepositoryGorm) GetAllSystemTags() (*[]interfaces.SystemTagRes
 		return nil, err
 	}
 	fmt.Println(results)
-	var systemTagResults []interfaces.SystemTagResultQuery
+	var systemTagResults []SystemTagResultQuery
 	for _, result := range results {
-		systemTagResults = append(systemTagResults, interfaces.SystemTagResultQuery{
+		systemTagResults = append(systemTagResults, SystemTagResultQuery{
 			SpendingTypeId: result.SpendingTypeId,
 			NameTh:         result.NameTh,
 			NameEn:         result.NameEn,

@@ -1,12 +1,27 @@
 package repositories
 
 import (
-	"money-service/interfaces"
+	"time"
 
 	"github.com/google/uuid"
+	"github.com/shopspring/decimal"
 )
 
 type IncomeRepository interface {
-	GetIncomesByUser(userId uuid.UUID) (*[]interfaces.IncomeResultQuery, error)
-	CreateIncome(id uuid.UUID, payload interfaces.IncomeInsertDb) (*uuid.UUID, error)
+	GetIncomesByUser(userId uuid.UUID) (*[]IncomeResultQuery, error)
+	CreateIncome(id uuid.UUID, payload IncomeInsertDb) (*uuid.UUID, error)
+}
+
+type IncomeResultQuery struct {
+	IncomeId    uuid.UUID
+	CreatedDate time.Time
+	TagId       uuid.UUID
+	Value       decimal.Decimal
+	UserOwner   uuid.UUID
+}
+
+type IncomeInsertDb struct {
+	TagId     uuid.UUID
+	Value     decimal.Decimal
+	UserOwner uuid.UUID
 }

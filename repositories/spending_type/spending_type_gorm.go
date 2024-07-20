@@ -3,7 +3,6 @@ package repositories
 import (
 	"fmt"
 	"money-service/entities"
-	"money-service/interfaces"
 
 	"gorm.io/gorm"
 )
@@ -16,7 +15,7 @@ func NewGormSpendingTypeRepository(db *gorm.DB) SpendingTypeRepository {
 	return &spendingRepositoryGorm{db: db}
 }
 
-func (r *spendingRepositoryGorm) GetSpendingTypes() (*[]interfaces.SpendingTypeResultQuery, error) {
+func (r *spendingRepositoryGorm) GetSpendingTypes() (*[]SpendingTypeResultQuery, error) {
 	var results []entities.SpendingTypeEntity
 	db := r.db
 
@@ -24,9 +23,9 @@ func (r *spendingRepositoryGorm) GetSpendingTypes() (*[]interfaces.SpendingTypeR
 		return nil, err
 	}
 	fmt.Print(results)
-	var spendingTypeResults []interfaces.SpendingTypeResultQuery
+	var spendingTypeResults []SpendingTypeResultQuery
 	for _, result := range results {
-		spendingTypeResults = append(spendingTypeResults, interfaces.SpendingTypeResultQuery{
+		spendingTypeResults = append(spendingTypeResults, SpendingTypeResultQuery{
 			SpendingTypeId: result.SpendingTypeId,
 			NameTh:         result.NameTh,
 			NameEn:         result.NameEn,

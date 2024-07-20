@@ -2,28 +2,24 @@ package services
 
 import (
 	"fmt"
-	"money-service/interfaces"
-	"money-service/utils"
+	user "money-service/services/user"
+	Hasher "money-service/utils/hasher"
+	Jwt "money-service/utils/jwt"
+
 	"time"
 
 	"github.com/golang-jwt/jwt/v4"
 	"github.com/google/uuid"
 )
 
-type AuthService struct {
-	userService *UserService
-	hasher      utils.Hasher
-	jwt         utils.Jwt
+func NewAuthService(userService user.UserService, hasher Hasher.Hasher, _jwt Jwt.Jwt) AuthService {
+	return &authService{userService: userService, hasher: hasher, jwt: _jwt}
 }
 
-func NewAuthService(userService *UserService, hasher utils.Hasher, jwt utils.Jwt) *AuthService {
-	return &AuthService{userService: userService, hasher: hasher, jwt: jwt}
-}
+// var loginWhiteLists string
 
-var loginWhiteLists string
-
-func (s *AuthService) Register(payload interfaces.AuthRegisterInsert) (*uuid.UUID, error) {
-	result, err := s.userService.CreateUser(interfaces.UserInsertDb{
+func (s *authService) Register(payload AuthRegisterInsert) (*uuid.UUID, error) {
+	result, err := s.userService.CreateUser(user.UserResult{
 		UserName:    payload.UserName,
 		Email:       payload.Email,
 		LastName:    payload.LastName,
@@ -35,7 +31,7 @@ func (s *AuthService) Register(payload interfaces.AuthRegisterInsert) (*uuid.UUI
 	return result, err
 }
 
-func (s *AuthService) Login(credential, password string) (*string, error) {
+func (s *authService) Login(credential, password string) (*string, error) {
 	userSecureData, err := s.userService.GetLoginDataByCredential(credential)
 	if err != nil {
 		return nil, err
@@ -46,15 +42,16 @@ func (s *AuthService) Login(credential, password string) (*string, error) {
 		return nil, err
 	}
 
-	claims := interfaces.AuthClaims{
+	claims := AuthClaims{
 		UserId:   userSecureData.UserId,
 		Username: userSecureData.UserName,
 		Email:    userSecureData.Email,
-		RegisteredClaims: jwt.RegisteredClaims{
+	}
+	jwt, err := s.jwt.CreateJWT(&Jwt.AuthClaims{
+		Username: claims.Username, Email: claims.Email, UserId: claims.UserId, RegisteredClaims: jwt.RegisteredClaims{
 			ExpiresAt: jwt.NewNumericDate(time.Now().Add(time.Hour * 24)),
 		},
-	}
-	jwt, err := s.jwt.CreateJWT(&claims)
+	})
 
 	if err != nil {
 		return nil, err
