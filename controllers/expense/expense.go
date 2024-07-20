@@ -5,7 +5,6 @@ import (
 	jwt "money-service/utils/jwt"
 
 	"github.com/gofiber/fiber/v2"
-	"github.com/google/uuid"
 )
 
 func NewFiberExpenseController(service expenseSevice.ExpenseService) FiberExpenseController {
@@ -30,8 +29,8 @@ func (s expenseController) CreateExpense() fiber.Handler {
 			return c.Status(400).JSON(fiber.Map{"error": err.Error()})
 		}
 
-		userId := "1"
-		res, err := s.service.CreateExpense(uuid.MustParse(userId), expenseSevice.ExpenseInsert{
+		claims := c.Locals("user").(*jwt.AuthClaims)
+		res, err := s.service.CreateExpense(claims.UserId, expenseSevice.ExpenseInsert{
 			TagId: payload.TagId,
 			Value: payload.Value,
 		})

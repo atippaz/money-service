@@ -2,7 +2,6 @@ package controllers
 
 import (
 	"fmt"
-	"money-service/interfaces"
 	authSevice "money-service/services/auth"
 
 	"github.com/gofiber/fiber/v2"
@@ -13,7 +12,7 @@ func NewFiberAuthController(service authSevice.AuthService) FiberAuthController 
 }
 func (s authController) Register() fiber.Handler {
 	return func(c *fiber.Ctx) error {
-		payload := interfaces.AuthRegisterRequest{}
+		payload := AuthRegisterRequest{}
 		if err := c.BodyParser(&payload); err != nil {
 			return c.Status(400).JSON(fiber.Map{"error": err.Error()})
 		}
@@ -38,7 +37,7 @@ func (s authController) Register() fiber.Handler {
 }
 func (s authController) Login() fiber.Handler {
 	return func(c *fiber.Ctx) error {
-		payload := interfaces.AuthLoginRequest{}
+		payload := AuthLoginRequest{}
 		if err := c.BodyParser(&payload); err != nil {
 			return c.Status(400).JSON(fiber.Map{"error": err.Error()})
 		}

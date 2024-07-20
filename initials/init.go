@@ -86,7 +86,7 @@ func initContollers() {
 	authController = auth_contoller.NewFiberAuthController(authService)
 }
 
-func initMiddleWare(config *config.Config) {
+func initMiddleWare() {
 	middleWareJwt = middlewares.NewJwtMiddleware(jwtUtils)
 }
 func initRoutes(app fiber.Router) {
@@ -104,6 +104,7 @@ func InitApplication(app fiber.Router, config *config.Config) {
 	initUtils(config)
 	initServices()
 	initContollers()
-	initMiddleWare(config)
+	initMiddleWare()
+	app.Use(middlewares.ApiKeyMiddleware(config.API_KEY))
 	initRoutes(app)
 }

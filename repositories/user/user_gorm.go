@@ -1,7 +1,6 @@
 package repositories
 
 import (
-	"fmt"
 	"money-service/entities"
 
 	"github.com/google/uuid"
@@ -32,8 +31,6 @@ func (r *userRepositoryGorm) CreateUser(payload UserInsertDb) (*uuid.UUID, error
 	if err := db.Create(&newUser).Error; err != nil {
 		return nil, err
 	}
-	fmt.Println(newUser.UserId)
-	fmt.Println(&newUser.UserId)
 
 	return &newUser.UserId, nil
 }

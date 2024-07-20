@@ -1,21 +1,16 @@
 package middlewares
 
 import (
-	"fmt"
-	"money-service/config"
-	"os"
-
 	"github.com/gofiber/fiber/v2"
 	// "github.com/golang-jwt/jwt/v4"
 )
 
-func ApiKeyMiddleware() fiber.Handler {
+func ApiKeyMiddleware(keySecert string) fiber.Handler {
 	return func(c *fiber.Ctx) error {
-		tokenString := c.Get("Authorization")
-		fmt.Println("check api key")
-		apiKey := os.Getenv("API_KEY")
-		fmt.Println("no token ", apiKey, tokenString)
-		c.Locals("user", config.UserId)
+		apiKeyHeader := c.Get("X-API-KEY")
+		if keySecert != apiKeyHeader {
+			return c.JSON("")
+		}
 		return c.Next()
 	}
 }
