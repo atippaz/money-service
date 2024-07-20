@@ -9,7 +9,7 @@ func ApiKeyMiddleware(keySecert string) fiber.Handler {
 	return func(c *fiber.Ctx) error {
 		apiKeyHeader := c.Get("X-API-KEY")
 		if keySecert != apiKeyHeader {
-			return c.JSON("")
+			return c.Status(fiber.StatusUnauthorized).SendString("Missing token")
 		}
 		return c.Next()
 	}
