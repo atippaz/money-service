@@ -38,7 +38,6 @@ func (s *authService) Login(credential, password string) (*string, error) {
 	}
 	fmt.Println(userSecureData)
 	if !s.hasher.ComparePassword(password, userSecureData.Password) {
-
 		return nil, err
 	}
 

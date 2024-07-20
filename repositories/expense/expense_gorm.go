@@ -1,7 +1,6 @@
 package repositories
 
 import (
-	"fmt"
 	"money-service/entities"
 
 	"github.com/google/uuid"
@@ -23,7 +22,6 @@ func (r *expenseRepositoryGorm) GetExpensesByUser(userId uuid.UUID) (*[]ExpenseR
 	if err := db.Select("*").Find(&results).Error; err != nil {
 		return nil, err
 	}
-	fmt.Println(results)
 	var expenseResults []ExpenseResultQuery
 	for _, result := range results {
 		expenseResults = append(expenseResults, ExpenseResultQuery{

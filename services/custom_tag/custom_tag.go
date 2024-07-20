@@ -10,9 +10,19 @@ func NewCustomTagService(repo repositories.CustomTagRepository) CustomTagService
 	return &customTagService{repo: repo}
 }
 func (s *customTagService) GetCustomTagsByUser(id string) (*[]CustomTagResult, error) {
-	// res, err := s.repo.GetCustomTagsByUser(id)
-	// return res, err
-	return nil, nil
+	res, err := s.repo.GetCustomTagsByUser(id)
+	var results []CustomTagResult
+	for _, result := range *res {
+		results = append(results, CustomTagResult{
+			TagId:          result.TagId,
+			NameTh:         result.NameTh,
+			NameEn:         result.NameEn,
+			IsActive:       result.IsActive,
+			SpendingTypeId: result.SpendingTypeId,
+			UserOwner:      result.UserOwner,
+		})
+	}
+	return &results, err
 }
 
 func (s *customTagService) CreateCustomTag(id uuid.UUID) (*uuid.UUID, error) {

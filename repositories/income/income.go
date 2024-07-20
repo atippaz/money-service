@@ -21,7 +21,6 @@ type IncomeResultQuery struct {
 }
 
 type IncomeInsertDb struct {
-	TagId     uuid.UUID
-	Value     decimal.Decimal
-	UserOwner uuid.UUID
+	TagId uuid.UUID
+	Value decimal.Decimal
 }

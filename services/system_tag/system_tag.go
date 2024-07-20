@@ -9,7 +9,17 @@ func NewSystemTagService(repo repositories.SystemTagRepository) SystemTagService
 }
 
 func (s *systemTagService) GetAllSystemTags() (*[]SystemTagResult, error) {
-	// res, err := s.repo.GetAllSystemTags()
-	// return res, err
-	return nil, nil
+	res, err := s.repo.GetAllSystemTags()
+	var results []SystemTagResult
+	for _, result := range *res {
+		results = append(results, SystemTagResult{
+			TagId:          result.TagId,
+			NameTh:         result.NameTh,
+			NameEn:         result.NameEn,
+			IsActive:       result.IsActive,
+			SpendingTypeId: result.SpendingTypeId,
+		})
+	}
+	return &results, err
+
 }
