@@ -2,9 +2,9 @@ package controllers
 
 import (
 	incomeService "money-service/src/services/income"
+	jwtUtils "money-service/src/utils/jwt"
 
 	"github.com/gofiber/fiber/v2"
-	"github.com/google/uuid"
 )
 
 func NewFiberIncomeController(service incomeService.IncomeService) FiberIncomeController {
@@ -26,9 +26,8 @@ func (s incomeController) CreateIncome() fiber.Handler {
 }
 func (s incomeController) GetIncomesByUser() fiber.Handler {
 	return func(c *fiber.Ctx) error {
-		// get uuid from user middleware
-		id := uuid.New()
-		res, err := s.service.GetIncomesByUser(id)
+		claims := c.Locals("user").(*jwtUtils.AuthClaims)
+		res, err := s.service.GetIncomesByUser(claims.UserId)
 		if err != nil {
 			return c.Status(fiber.StatusInternalServerError).SendString(err.Error())
 		}

@@ -7,7 +7,7 @@ import (
 )
 
 type CustomTagService interface {
-	GetCustomTagsByUser(id string) (*[]CustomTagResult, error)
+	GetCustomTagsByUser(userId uuid.UUID) (*[]CustomTagResult, error)
 	CreateCustomTag(id uuid.UUID) (*uuid.UUID, error)
 }
 type customTagService struct {

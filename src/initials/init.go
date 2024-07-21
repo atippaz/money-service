@@ -31,6 +31,7 @@ import (
 	system_tag_service "money-service/src/services/system_tag"
 	user_service "money-service/src/services/user"
 
+	"github.com/go-playground/validator"
 	"github.com/gofiber/fiber/v2"
 )
 
@@ -61,6 +62,7 @@ var encodeUtils hasher.Hasher
 var jwtUtils Jwt.Jwt
 
 var middleWareJwt middlewares.JWTMiddleware
+var validate = validator.New()
 
 func initUtils(config *config.Config) {
 	encodeUtils = hasher.NewHasher()
@@ -83,7 +85,7 @@ func initContollers() {
 	systemTagController = system_tag_contoller.NewFiberSystemTagController(system_tagService)
 	customTagController = custom_tag_contoller.NewFiberCustomTagController(custom_tagService)
 	spendingTypeController = spending_type_contoller.NewFiberSpendingTypeController(spendingService)
-	authController = auth_contoller.NewFiberAuthController(authService)
+	authController = auth_contoller.NewFiberAuthController(authService, validate)
 }
 
 func initMiddleWare() {

@@ -9,8 +9,8 @@ import (
 func NewCustomTagService(repo repositories.CustomTagRepository) CustomTagService {
 	return &customTagService{repo: repo}
 }
-func (s *customTagService) GetCustomTagsByUser(id string) (*[]CustomTagResult, error) {
-	res, err := s.repo.GetCustomTagsByUser(id)
+func (s *customTagService) GetCustomTagsByUser(userId uuid.UUID) (*[]CustomTagResult, error) {
+	res, err := s.repo.GetCustomTagsByUser(userId)
 	var results []CustomTagResult
 	for _, result := range *res {
 		results = append(results, CustomTagResult{

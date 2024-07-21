@@ -3,19 +3,23 @@ package controllers
 import (
 	authSevice "money-service/src/services/auth"
 
+	"github.com/go-playground/validator"
 	"github.com/gofiber/fiber/v2"
 )
 
-func NewFiberAuthController(service authSevice.AuthService) FiberAuthController {
-	return &authController{service}
+func NewFiberAuthController(service authSevice.AuthService, validate *validator.Validate) FiberAuthController {
+	return &authController{service, validate}
 }
+
 func (s authController) Register() fiber.Handler {
 	return func(c *fiber.Ctx) error {
 		payload := AuthRegisterRequest{}
 		if err := c.BodyParser(&payload); err != nil {
 			return c.Status(400).JSON(fiber.Map{"error": err.Error()})
 		}
-
+		if err := s.validate.Struct(payload); err != nil {
+			return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error": err.Error()})
+		}
 		res, err := s.service.Register(authSevice.AuthRegisterInsert{
 			UserName:    payload.UserName,
 			Email:       payload.Email,
@@ -37,6 +41,9 @@ func (s authController) Login() fiber.Handler {
 		payload := AuthLoginRequest{}
 		if err := c.BodyParser(&payload); err != nil {
 			return c.Status(400).JSON(fiber.Map{"error": err.Error()})
+		}
+		if err := s.validate.Struct(payload); err != nil {
+			return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error": err.Error()})
 		}
 		res, err := s.service.Login(payload.Credential, payload.Password)
 		if err != nil {

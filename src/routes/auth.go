@@ -12,6 +12,7 @@ import (
 
 func AuthRoute(app fiber.Router, controllers controllers.FiberAuthController) {
 	api := app.Group("/auth")
+
 	api.Post("/login", controllers.Login())
 	api.Post("/register", controllers.Register())
 	api.Post("/logout", controllers.Logout())

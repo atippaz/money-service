@@ -5,7 +5,7 @@ import (
 )
 
 type CustomTagRepository interface {
-	GetCustomTagsByUser(ownerId string) (*[]CustomTagResultQuery, error)
+	GetCustomTagsByUser(userId uuid.UUID) (*[]CustomTagResultQuery, error)
 	CreateCustomTag(userOwner uuid.UUID, payload CustomTagInsertDB) (*uuid.UUID, error)
 }
 type CustomTagResultQuery struct {

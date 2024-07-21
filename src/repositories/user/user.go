@@ -7,8 +7,8 @@ import (
 )
 
 type UserRepository interface {
-	GetUserById(id uuid.UUID) (*UserResultQuery, error)
-	DeActiveAccount(id string) (bool, error)
+	GetUserById(userId uuid.UUID) (*UserResultQuery, error)
+	DeActiveAccount(userId uuid.UUID) (bool, error)
 	CreateUser(payload UserInsertDb) (*uuid.UUID, error)
 	GetUserByCredential(credential string) (*UserResultQuery, error)
 }

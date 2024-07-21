@@ -29,11 +29,11 @@ func (r *customTagRepositoryGorm) CreateCustomTag(userOwner uuid.UUID, payload C
 	return &newCustomTag.TagId, nil
 }
 
-func (r *customTagRepositoryGorm) GetCustomTagsByUser(ownerId string) (*[]CustomTagResultQuery, error) {
+func (r *customTagRepositoryGorm) GetCustomTagsByUser(userId uuid.UUID) (*[]CustomTagResultQuery, error) {
 	var results []entities.CustomTagEntity
 	db := r.db
 
-	if err := db.Where("AND is_active = ?", true).Find(&results).Error; err != nil {
+	if err := db.Where("AND is_active = ? AND user_owner = ?", true, userId).Find(&results).Error; err != nil {
 		return nil, err
 	}
 	var customTagResults []CustomTagResultQuery

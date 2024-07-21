@@ -10,9 +10,9 @@ import (
 
 type UserService interface {
 	GetLoginDataByCredential(credential string) (*UserLoginInfo, error)
-	DeActiveAccount(id string) (bool, error)
+	DeActiveAccount(userId uuid.UUID) (bool, error)
 	CreateUser(payload UserResult) (*uuid.UUID, error)
-	GetUserById(id uuid.UUID) (*UserInfo, error)
+	GetUserById(userId uuid.UUID) (*UserInfo, error)
 }
 type userService struct {
 	repo   userRepositories.UserRepository

@@ -34,7 +34,7 @@ func (r *userRepositoryGorm) CreateUser(payload UserInsertDb) (*uuid.UUID, error
 
 	return &newUser.UserId, nil
 }
-func (r *userRepositoryGorm) DeActiveAccount(id string) (bool, error) {
+func (r *userRepositoryGorm) DeActiveAccount(userId uuid.UUID) (bool, error) {
 	var result entities.UserEntity
 	db := r.db
 

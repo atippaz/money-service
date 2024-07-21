@@ -11,8 +11,8 @@ func NewUserService(repo userRepositories.UserRepository, encode Hasher.Hasher) 
 	return &userService{repo: repo, encode: encode}
 }
 
-func (s *userService) GetUserById(id uuid.UUID) (*UserInfo, error) {
-	result, err := s.repo.GetUserById(id)
+func (s *userService) GetUserById(userId uuid.UUID) (*UserInfo, error) {
+	result, err := s.repo.GetUserById(userId)
 	return &UserInfo{
 		UserId:      result.UserId,
 		UserName:    result.UserName,
@@ -35,8 +35,8 @@ func (s *userService) GetLoginDataByCredential(credential string) (*UserLoginInf
 	}, err
 }
 
-func (s *userService) DeActiveAccount(id string) (bool, error) {
-	res, err := s.repo.DeActiveAccount(id)
+func (s *userService) DeActiveAccount(userId uuid.UUID) (bool, error) {
+	res, err := s.repo.DeActiveAccount(userId)
 	return res, err
 }
 

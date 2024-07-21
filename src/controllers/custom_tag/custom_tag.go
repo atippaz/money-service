@@ -2,9 +2,9 @@ package controllers
 
 import (
 	customTagSevice "money-service/src/services/custom_tag"
+	jwtUtils "money-service/src/utils/jwt"
 
 	"github.com/gofiber/fiber/v2"
-	"github.com/google/uuid"
 )
 
 func NewFiberCustomTagController(service customTagSevice.CustomTagService) FiberCustomTagController {
@@ -12,10 +12,8 @@ func NewFiberCustomTagController(service customTagSevice.CustomTagService) Fiber
 }
 func (s customTagController) GetCustomTagsByUser() fiber.Handler {
 	return func(c *fiber.Ctx) error {
-		// user := c.Locals("user").(string)
-
-		id := c.Params("id")
-		res, err := s.service.GetCustomTagsByUser(id)
+		claims := c.Locals("user").(*jwtUtils.AuthClaims)
+		res, err := s.service.GetCustomTagsByUser(claims.UserId)
 		if err != nil {
 			return c.Status(fiber.StatusInternalServerError).SendString(err.Error())
 		}
@@ -24,9 +22,8 @@ func (s customTagController) GetCustomTagsByUser() fiber.Handler {
 }
 func (s customTagController) CreateCustomTag() fiber.Handler {
 	return func(c *fiber.Ctx) error {
-		// user := c.Locals("user").(string)
-		id := uuid.MustParse("e8bc8014-4a5a-4e91-a6d2-3b5b6f77d3e0")
-		res, err := s.service.CreateCustomTag(id)
+		claims := c.Locals("user").(*jwtUtils.AuthClaims)
+		res, err := s.service.CreateCustomTag(claims.UserId)
 		if err != nil {
 			return c.Status(fiber.StatusInternalServerError).SendString(err.Error())
 		}
