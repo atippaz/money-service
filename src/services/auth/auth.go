@@ -1,7 +1,6 @@
 package services
 
 import (
-	"fmt"
 	user "money-service/src/services/user"
 	Hasher "money-service/src/utils/hasher"
 	Jwt "money-service/src/utils/jwt"
@@ -36,7 +35,6 @@ func (s *authService) Login(credential, password string) (*string, error) {
 	if err != nil {
 		return nil, err
 	}
-	fmt.Println(userSecureData)
 	if !s.hasher.ComparePassword(password, userSecureData.Password) {
 		return nil, err
 	}

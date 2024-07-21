@@ -1,7 +1,6 @@
 package controllers
 
 import (
-	"fmt"
 	incomeService "money-service/src/services/income"
 
 	"github.com/gofiber/fiber/v2"
@@ -18,7 +17,6 @@ func (s incomeController) CreateIncome() fiber.Handler {
 		// payload := IncomeInsertDb{}
 		// id := uuid.New()
 		// res, err := s.service.CreateIncome(id, payload)
-		// fmt.Print(res)
 		// if err != nil {
 		// 	return c.Status(fiber.StatusInternalServerError).SendString(err.Error())
 		// }
@@ -31,7 +29,6 @@ func (s incomeController) GetIncomesByUser() fiber.Handler {
 		// get uuid from user middleware
 		id := uuid.New()
 		res, err := s.service.GetIncomesByUser(id)
-		fmt.Print(res)
 		if err != nil {
 			return c.Status(fiber.StatusInternalServerError).SendString(err.Error())
 		}

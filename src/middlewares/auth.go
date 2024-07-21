@@ -1,7 +1,6 @@
 package middlewares
 
 import (
-	"fmt"
 	Jwt "money-service/src/utils/jwt"
 	"strings"
 
@@ -40,12 +39,7 @@ func (s jwtMiddleware) MiddleWare() fiber.Handler {
 			})
 		}
 		tokenString := parts[1]
-
-		fmt.Println(tokenString)
-
 		user, err := s.jwt.DecodeJWT(tokenString)
-		fmt.Println(err)
-
 		if err != nil {
 			return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{
 				"message": "Invalid or expired JWT",
@@ -56,8 +50,6 @@ func (s jwtMiddleware) MiddleWare() fiber.Handler {
 			Email:    user.Email,
 			UserId:   user.UserId,
 		}
-		fmt.Println("sss")
-		fmt.Println(claim)
 
 		c.Locals("user", &claim)
 		return c.Next()

@@ -1,7 +1,6 @@
 package services
 
 import (
-	"fmt"
 	userRepositories "money-service/src/repositories/user"
 	Hasher "money-service/src/utils/hasher"
 
@@ -45,7 +44,6 @@ func (s *userService) CreateUser(payload UserResult) (*uuid.UUID, error) {
 	//todo check email
 	//todo check username
 	//todo hash password
-	fmt.Println(s.encode)
 	password, err := s.encode.Hashing(&payload.Password)
 	if err != nil {
 		return nil, err
