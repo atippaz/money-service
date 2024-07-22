@@ -7,6 +7,7 @@ import (
 
 	swagger "github.com/arsmn/fiber-swagger/v2"
 	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v2/middleware/cors"
 	"github.com/gofiber/fiber/v2/middleware/logger"
 	"github.com/gofiber/fiber/v2/middleware/recover"
 )
@@ -16,6 +17,13 @@ var app = fiber.New()
 func GetInstanceServer() (fiber.Router, *Config) {
 	app.Use(logger.New())
 	app.Use(recover.New())
+	app.Use(cors.New(cors.Config{
+		AllowOrigins:     "http://localhost:3000,http://localhost:3000/", // ระบุ origin ที่ต้องการ
+		AllowMethods:     "GET,POST,PUT,DELETE,OPTIONS",
+		AllowHeaders:     "Origin, Content-Type, Accept, X-API-KEY,Authorization",
+		ExposeHeaders:    "Content-Length",
+		AllowCredentials: true,
+	}))
 	api := app.Group(fmt.Sprintf("/api/%s", cfg.API_VERSION))
 	api.Get("/", func(c *fiber.Ctx) error {
 		return c.SendString("welcome to my api")
@@ -36,6 +44,7 @@ func GetInstanceServer() (fiber.Router, *Config) {
 // @BasePath /api/v1
 
 func StartServer() {
+
 	app.Get("/swagger/*", swagger.HandlerDefault)
 
 	if err := app.Listen(":" + cfg.SERVER_PORT); err != nil {
