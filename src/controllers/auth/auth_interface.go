@@ -31,5 +31,5 @@ type AuthRegisterRequest struct {
 
 type AuthLoginRequest struct {
 	Credential string `json:"credential" validate:"required,min=3"`
-	Password   string `json:"password" validate:"required,min=6"`
+	Password   string `json:"password" validate:"required,min=4"`
 }

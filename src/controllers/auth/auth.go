@@ -47,7 +47,7 @@ func (s authController) Login() fiber.Handler {
 		}
 		res, err := s.service.Login(payload.Credential, payload.Password)
 		if err != nil {
-			return c.Status(401).JSON(fiber.Map{"error": err.Error()})
+			return c.Status(400).JSON("not found")
 		}
 		return c.JSON(res)
 	}

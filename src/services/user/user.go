@@ -27,6 +27,9 @@ func (s *userService) GetUserById(userId uuid.UUID) (*UserInfo, error) {
 
 func (s *userService) GetLoginDataByCredential(credential string) (*UserLoginInfo, error) {
 	result, err := s.repo.GetUserByCredential(credential)
+	if err != nil {
+		return nil, err
+	}
 	return &UserLoginInfo{
 		UserName: result.UserName,
 		Email:    result.Email,
