@@ -97,7 +97,7 @@ func initRoutes(app fiber.Router) {
 	routes.IncomeRoute(app, incomeController)
 	routes.SystemTagRoute(app, systemTagController)
 	routes.CustomTagRoute(app, customTagController, middleWareJwt)
-	routes.UserRoute(app, userController)
+	routes.UserRoute(app, userController, middleWareJwt)
 	routes.AuthRoute(app, authController)
 
 }
