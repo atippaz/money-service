@@ -22,7 +22,7 @@ func (r *expenseRepositoryGorm) GetExpensesByUser(userId uuid.UUID) (*[]ExpenseR
 	if err := db.Find(&results).Error; err != nil {
 		return nil, err
 	}
-	var expenseResults []ExpenseResultQuery
+	expenseResults := make([]ExpenseResultQuery, 0)
 	for _, result := range results {
 		expenseResults = append(expenseResults, ExpenseResultQuery{
 			ExpenseId: result.ExpenseId,

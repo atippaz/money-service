@@ -110,7 +110,7 @@ func InitApplication(app fiber.Router, config *config.Config) {
 	initServices()
 	initContollers()
 	initMiddleWare()
-	app.Use(middlewares.FormatDataMiddleware())
+	// app.Use(middlewares.FormatDataMiddleware())
 	app.Use(middlewares.ApiKeyMiddleware(config.API_KEY))
 	initRoutes(app)
 }

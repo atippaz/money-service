@@ -28,18 +28,18 @@ type UserResult struct {
 	Profile     string
 }
 type UserInfo struct {
-	UserId      uuid.UUID `json:"userId"`
-	Email       string    `json:"email"`
-	UserName    string    `json:"userName"`
-	LastName    string    `json:"lastName"`
-	FirstName   string    `json:"firstName"`
-	DisplayName string    `json:"displayName"`
-	Profile     string    `json:"profile"`
-	CreatedDate time.Time `json:"createdDate"`
+	UserId      uuid.UUID
+	Email       string
+	UserName    string
+	LastName    string
+	FirstName   string
+	DisplayName string
+	Profile     string
+	CreatedDate time.Time
 }
 type UserLoginInfo struct {
-	UserId   uuid.UUID `json:"userId"`
-	Email    string    `json:"email"`
-	UserName string    `json:"userName"`
-	Password string    `json:"password"`
+	UserId   uuid.UUID
+	Email    string
+	UserName string
+	Password string
 }

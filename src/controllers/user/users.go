@@ -17,7 +17,16 @@ func (s userController) GetUserById() fiber.Handler {
 		if err != nil {
 			return c.Status(fiber.StatusInternalServerError).SendString(err.Error())
 		}
-		return c.JSON(res)
+		return c.JSON(UserInfo{
+			UserId:      res.UserId,
+			Email:       res.Email,
+			UserName:    res.UserName,
+			LastName:    res.LastName,
+			FirstName:   res.FirstName,
+			DisplayName: res.DisplayName,
+			Profile:     res.Profile,
+			CreatedDate: res.CreatedDate,
+		})
 	}
 }
 func (s userController) DeActiveAccount() fiber.Handler {

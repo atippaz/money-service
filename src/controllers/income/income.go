@@ -55,7 +55,7 @@ func (s incomeController) GetIncomesByUser() fiber.Handler {
 			return c.Status(fiber.StatusInternalServerError).SendString(err.Error())
 		}
 
-		var results []IncomeResult
+		results := []IncomeResult{}
 		for _, result := range *res {
 			results = append(results, IncomeResult{
 				CreatedDate: result.CreatedDate,

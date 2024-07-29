@@ -15,7 +15,7 @@ func (s systemTagController) GetAllSystemTags() fiber.Handler {
 		if err != nil {
 			return c.Status(fiber.StatusInternalServerError).SendString(err.Error())
 		}
-		var results []TagsResult
+		results := []TagsResult{}
 		for _, result := range *res {
 			results = append(results, TagsResult{
 				TagId:          result.TagId.String(),

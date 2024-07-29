@@ -37,3 +37,10 @@ type ExpenseInsertDb struct {
 	TagId uuid.UUID
 	Value decimal.Decimal
 }
+type ExpenseResult struct {
+	CreatedDate time.Time       `json:"createdDate" `
+	ExpenseId   string          `json:"ำxpenseId" `
+	TagId       string          `json:"tagId" `
+	UserOwner   string          `json:"userOwner" `
+	Value       decimal.Decimal `json:"value"`
+}

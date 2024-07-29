@@ -42,6 +42,7 @@ func FormatDataMiddleware() fiber.Handler {
 			}
 		} else {
 			var temp interface{}
+			fmt.Println(body)
 			if err := json.Unmarshal(body, &temp); err == nil {
 				response.Data = temp
 			}

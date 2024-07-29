@@ -18,7 +18,17 @@ func (s expenseController) GetExpensesByUser() fiber.Handler {
 		if err != nil {
 			return c.Status(fiber.StatusInternalServerError).SendString(err.Error())
 		}
-		return c.JSON(res)
+		results := []ExpenseResult{}
+		for _, result := range *res {
+			results = append(results, ExpenseResult{
+				CreatedDate: result.CreatedDate,
+				ExpenseId:   result.ExpenseId.String(),
+				TagId:       result.TagId.String(),
+				UserOwner:   result.UserOwner.String(),
+				Value:       result.Value,
+			})
+		}
+		return c.JSON(results)
 	}
 }
 
