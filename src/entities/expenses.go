@@ -13,6 +13,7 @@ type ExpensesEntity struct {
 	TagId       uuid.UUID       `gorm:"column:tag_id;not null;"`
 	Value       decimal.Decimal `gorm:"column:value;not null;"`
 	UserOwner   uuid.UUID       `gorm:"column:user_owner;not null;"`
+	Note        string          `gorm:"column:note;"`
 }
 
 func (ExpensesEntity) TableName() string {

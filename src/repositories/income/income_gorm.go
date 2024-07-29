@@ -2,6 +2,7 @@ package repositories
 
 import (
 	"money-service/src/entities"
+	"time"
 
 	"github.com/google/uuid"
 	"gorm.io/gorm"
@@ -28,17 +29,29 @@ func (r *incomeRepositoryGorm) CreateIncome(userId uuid.UUID, payload IncomeInse
 	return (&newIncome.IncomeId), nil
 }
 
-func (r *incomeRepositoryGorm) GetIncomesByUser(userId uuid.UUID) (*[]IncomeResultQuery, error) {
+func (r *incomeRepositoryGorm) GetIncomesByUser(userId uuid.UUID, startDate *time.Time, endDate *time.Time) (*[]IncomeResultQuery, error) {
 	var results []entities.IncomesEntity
 	db := r.db
+	query := db.Where("user_owner = ?", userId)
 
-	if err := db.Where("user_onwer = ?", userId).Find(&results).Error; err != nil {
+	if startDate != nil {
+		query = query.Where("created_date >= ?", *startDate)
+	}
+
+	if endDate != nil {
+		query = query.Where("created_date <= ?", *endDate)
+	}
+	if err := query.Find(&results).Error; err != nil {
 		return nil, err
 	}
 	var incomesResults []IncomeResultQuery
 	for _, result := range results {
 		incomesResults = append(incomesResults, IncomeResultQuery{
-			IncomeId: result.IncomeId,
+			IncomeId:    result.IncomeId,
+			CreatedDate: result.CreatedDate,
+			TagId:       result.TagId,
+			Value:       result.Value,
+			UserOwner:   result.UserOwner,
 		})
 	}
 

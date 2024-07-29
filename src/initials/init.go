@@ -18,6 +18,7 @@ import (
 	system_tag_repo "money-service/src/repositories/system_tag"
 	user_repo "money-service/src/repositories/user"
 
+	Datetime "money-service/src/utils/datetime"
 	hasher "money-service/src/utils/hasher"
 	Jwt "money-service/src/utils/jwt"
 
@@ -60,6 +61,7 @@ var authController auth_contoller.FiberAuthController
 
 var encodeUtils hasher.Hasher
 var jwtUtils Jwt.Jwt
+var datetime Datetime.Datetime
 
 var middleWareJwt middlewares.JWTMiddleware
 var validate = validator.New()
@@ -67,6 +69,7 @@ var validate = validator.New()
 func initUtils(config *config.Config) {
 	encodeUtils = hasher.NewHasher()
 	jwtUtils = Jwt.NewJwt(config.JWTSECERT)
+	datetime = Datetime.NewDatetime()
 }
 func initServices() {
 	spendingService = spending_type_service.NewSpendingTypeService(spendingRepo)
@@ -81,7 +84,7 @@ func initServices() {
 func initContollers() {
 	userController = user_contoller.NewFiberUserController(userService)
 	expenseController = expense_contoller.NewFiberExpenseController(expenseService)
-	incomeController = income_contoller.NewFiberIncomeController(incomeService)
+	incomeController = income_contoller.NewFiberIncomeController(incomeService, datetime)
 	systemTagController = system_tag_contoller.NewFiberSystemTagController(system_tagService)
 	customTagController = custom_tag_contoller.NewFiberCustomTagController(custom_tagService)
 	spendingTypeController = spending_type_contoller.NewFiberSpendingTypeController(spendingService)
@@ -94,7 +97,7 @@ func initMiddleWare() {
 func initRoutes(app fiber.Router) {
 	routes.SpendingTypeRoute(app, spendingTypeController)
 	routes.ExpenseRoute(app, expenseController, middleWareJwt)
-	routes.IncomeRoute(app, incomeController)
+	routes.IncomeRoute(app, incomeController, middleWareJwt)
 	routes.SystemTagRoute(app, systemTagController)
 	routes.CustomTagRoute(app, customTagController, middleWareJwt)
 	routes.UserRoute(app, userController, middleWareJwt)

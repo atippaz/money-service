@@ -2,6 +2,7 @@ package services
 
 import (
 	repositories "money-service/src/repositories/income"
+	"time"
 
 	"github.com/google/uuid"
 )
@@ -16,8 +17,8 @@ func (s *incomeService) CreateIncome(id uuid.UUID, payload IncomeInsert) (*uuid.
 	})
 	return res, err
 }
-func (s *incomeService) GetIncomesByUser(id uuid.UUID) (*[]IncomeResult, error) {
-	res, err := s.repo.GetIncomesByUser(id)
+func (s *incomeService) GetIncomesByUser(id uuid.UUID, startDate *time.Time, endDate *time.Time) (*[]IncomeResult, error) {
+	res, err := s.repo.GetIncomesByUser(id, startDate, endDate)
 	var results []IncomeResult
 	for _, result := range *res {
 		results = append(results, IncomeResult{

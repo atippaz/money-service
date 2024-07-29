@@ -8,7 +8,7 @@ import (
 )
 
 type IncomeRepository interface {
-	GetIncomesByUser(userId uuid.UUID) (*[]IncomeResultQuery, error)
+	GetIncomesByUser(userId uuid.UUID, startDate *time.Time, endDate *time.Time) (*[]IncomeResultQuery, error)
 	CreateIncome(id uuid.UUID, payload IncomeInsertDb) (*uuid.UUID, error)
 }
 

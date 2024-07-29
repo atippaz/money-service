@@ -10,7 +10,7 @@ import (
 
 type IncomeService interface {
 	CreateIncome(id uuid.UUID, payload IncomeInsert) (*uuid.UUID, error)
-	GetIncomesByUser(id uuid.UUID) (*[]IncomeResult, error)
+	GetIncomesByUser(id uuid.UUID, startDate *time.Time, endDate *time.Time) (*[]IncomeResult, error)
 }
 
 type incomeService struct {

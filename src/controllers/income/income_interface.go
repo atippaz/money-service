@@ -2,6 +2,7 @@ package controllers
 
 import (
 	incomeService "money-service/src/services/income"
+	Datetime "money-service/src/utils/datetime"
 
 	"github.com/gofiber/fiber/v2"
 )
@@ -12,7 +13,8 @@ type IncomeController[T any] interface {
 }
 
 type incomeController struct {
-	service incomeService.IncomeService
+	service  incomeService.IncomeService
+	datetime Datetime.Datetime
 }
 
 type FiberIncomeController interface {

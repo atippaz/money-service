@@ -1,14 +1,17 @@
 package controllers
 
 import (
+	"fmt"
 	incomeService "money-service/src/services/income"
+	Datetime "money-service/src/utils/datetime"
 	jwtUtils "money-service/src/utils/jwt"
+	"time"
 
 	"github.com/gofiber/fiber/v2"
 )
 
-func NewFiberIncomeController(service incomeService.IncomeService) FiberIncomeController {
-	return &incomeController{service}
+func NewFiberIncomeController(service incomeService.IncomeService, datetime Datetime.Datetime) FiberIncomeController {
+	return &incomeController{service, datetime}
 }
 func (s incomeController) CreateIncome() fiber.Handler {
 	return func(c *fiber.Ctx) error {
@@ -26,8 +29,28 @@ func (s incomeController) CreateIncome() fiber.Handler {
 }
 func (s incomeController) GetIncomesByUser() fiber.Handler {
 	return func(c *fiber.Ctx) error {
+		var startDate *time.Time
+		var endDate *time.Time
+		startDateStr := c.Query("startDate")
+		endDateStr := c.Query("endDate")
+		if startDateStr != "" {
+			date, err := s.datetime.ConvertToDate(startDateStr)
+			if err != nil {
+				date, _ = s.datetime.GetStartDate()
+			}
+			startDate = &date
+		}
+		if endDateStr != "" {
+			date, err := s.datetime.ConvertToDate(endDateStr)
+			fmt.Println(err)
+			if err != nil {
+				date, _ = s.datetime.GetEndDate()
+			}
+			endDate = &date
+		}
 		claims := c.Locals("user").(*jwtUtils.AuthClaims)
-		res, err := s.service.GetIncomesByUser(claims.UserId)
+		fmt.Println(endDate)
+		res, err := s.service.GetIncomesByUser(claims.UserId, startDate, endDate)
 		if err != nil {
 			return c.Status(fiber.StatusInternalServerError).SendString(err.Error())
 		}
