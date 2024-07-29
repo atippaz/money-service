@@ -17,3 +17,9 @@ type spendingTypeController struct {
 type FiberSpendingTypeController interface {
 	SpendingTypeController[fiber.Handler]
 }
+
+type SpendingTypeResult struct {
+	NameEn         string `json:"nameEn" `
+	NameTh         string `json:"nameTh" `
+	SpendingTypeId string `json:"spendingTypeId" `
+}

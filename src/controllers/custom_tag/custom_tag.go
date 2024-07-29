@@ -17,7 +17,19 @@ func (s customTagController) GetCustomTagsByUser() fiber.Handler {
 		if err != nil {
 			return c.Status(fiber.StatusInternalServerError).SendString(err.Error())
 		}
-		return c.JSON(res)
+		var results []CustomTagsResult
+		for _, result := range *res {
+			results = append(results, CustomTagsResult{
+				TagId:          result.TagId.String(),
+				NameTh:         result.NameTh,
+				NameEn:         result.NameEn,
+				IsActive:       result.IsActive,
+				SpendingTypeId: result.SpendingTypeId.String(),
+				UserOwner:      result.UserOwner.String(),
+			})
+		}
+
+		return c.JSON(&results)
 	}
 }
 func (s customTagController) CreateCustomTag() fiber.Handler {

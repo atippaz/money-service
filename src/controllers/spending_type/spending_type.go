@@ -15,6 +15,14 @@ func (s spendingTypeController) GetSpendingHandler() fiber.Handler {
 		if err != nil {
 			return c.Status(fiber.StatusInternalServerError).SendString(err.Error())
 		}
-		return c.JSON(res)
+		var results []SpendingTypeResult
+		for _, result := range *res {
+			results = append(results, SpendingTypeResult{
+				NameTh:         result.NameTh,
+				NameEn:         result.NameEn,
+				SpendingTypeId: result.SpendingTypeId.String(),
+			})
+		}
+		return c.JSON(results)
 	}
 }

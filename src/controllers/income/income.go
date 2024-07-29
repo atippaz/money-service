@@ -54,6 +54,17 @@ func (s incomeController) GetIncomesByUser() fiber.Handler {
 		if err != nil {
 			return c.Status(fiber.StatusInternalServerError).SendString(err.Error())
 		}
-		return c.JSON(res)
+
+		var results []IncomeResult
+		for _, result := range *res {
+			results = append(results, IncomeResult{
+				CreatedDate: result.CreatedDate,
+				IncomeId:    result.IncomeId.String(),
+				TagId:       result.TagId.String(),
+				UserOwner:   result.UserOwner.String(),
+				Value:       result.Value,
+			})
+		}
+		return c.JSON(results)
 	}
 }

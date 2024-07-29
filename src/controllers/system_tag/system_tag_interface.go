@@ -16,3 +16,11 @@ type systemTagController struct {
 type FiberSystemTagController interface {
 	SystemTagController[fiber.Handler]
 }
+
+type TagsResult struct {
+	IsActive       bool   `json:"isActive" `
+	NameEn         string `json:"nameEn" `
+	NameTh         string `json:"nameTh" `
+	SpendingTypeId string `json:"spendingTypeId" `
+	TagId          string `json:"tagId" `
+}

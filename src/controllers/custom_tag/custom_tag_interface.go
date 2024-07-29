@@ -17,3 +17,12 @@ type customTagController struct {
 type FiberCustomTagController interface {
 	CustomTagController[fiber.Handler]
 }
+
+type CustomTagsResult struct {
+	IsActive       bool   `json:"isActive" `
+	NameEn         string `json:"nameEn" `
+	NameTh         string `json:"nameTh" `
+	SpendingTypeId string `json:"spendingTypeId" `
+	TagId          string `json:"tagId" `
+	UserOwner      string `json:"userOwner" `
+}

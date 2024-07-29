@@ -15,6 +15,16 @@ func (s systemTagController) GetAllSystemTags() fiber.Handler {
 		if err != nil {
 			return c.Status(fiber.StatusInternalServerError).SendString(err.Error())
 		}
-		return c.JSON(res)
+		var results []TagsResult
+		for _, result := range *res {
+			results = append(results, TagsResult{
+				TagId:          result.TagId.String(),
+				NameTh:         result.NameTh,
+				NameEn:         result.NameEn,
+				IsActive:       result.IsActive,
+				SpendingTypeId: result.SpendingTypeId.String(),
+			})
+		}
+		return c.JSON(results)
 	}
 }

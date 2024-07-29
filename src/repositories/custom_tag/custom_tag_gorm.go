@@ -33,7 +33,7 @@ func (r *customTagRepositoryGorm) GetCustomTagsByUser(userId uuid.UUID) (*[]Cust
 	var results []entities.CustomTagEntity
 	db := r.db
 
-	if err := db.Where("AND is_active = ? AND user_owner = ?", true, userId).Find(&results).Error; err != nil {
+	if err := db.Where("is_active = ? AND user_owner = ?", true, userId).Find(&results).Error; err != nil {
 		return nil, err
 	}
 	var customTagResults []CustomTagResultQuery
