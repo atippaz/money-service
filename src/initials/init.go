@@ -83,7 +83,7 @@ func initServices() {
 
 func initContollers() {
 	userController = user_contoller.NewFiberUserController(userService)
-	expenseController = expense_contoller.NewFiberExpenseController(expenseService)
+	expenseController = expense_contoller.NewFiberExpenseController(expenseService, datetime)
 	incomeController = income_contoller.NewFiberIncomeController(incomeService, datetime)
 	systemTagController = system_tag_contoller.NewFiberSystemTagController(system_tagService)
 	customTagController = custom_tag_contoller.NewFiberCustomTagController(custom_tagService)

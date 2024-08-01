@@ -13,6 +13,7 @@ func ExpenseRoute(app fiber.Router, controllers controllers.FiberExpenseControll
 	api.Get("/", controllers.GetExpensesByUser())
 	api.Post("/", controllers.CreateExpense())
 	api.Patch("/", controllers.CreateExpense())
+	api.Get("/summary", controllers.GetSummary())
 
 	// update in 30 minute
 	// delete in 1 day

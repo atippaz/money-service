@@ -8,7 +8,7 @@ import (
 )
 
 type ExpenseRepository interface {
-	GetExpensesByUser(userId uuid.UUID) (*[]ExpenseResultQuery, error)
+	GetExpensesByUser(userId uuid.UUID, startDate *time.Time, endDate *time.Time) (*[]ExpenseResultQuery, error)
 	CreateExpense(userId uuid.UUID, payload ExpenseInsertDb) (*uuid.UUID, error)
 }
 

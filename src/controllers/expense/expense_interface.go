@@ -2,6 +2,7 @@ package controllers
 
 import (
 	expenseSevice "money-service/src/services/expense"
+	Datetime "money-service/src/utils/datetime"
 	"time"
 
 	"github.com/gofiber/fiber/v2"
@@ -12,10 +13,12 @@ import (
 type ExpenseController[T fiber.Handler] interface {
 	GetExpensesByUser() T
 	CreateExpense() T
+	GetSummary() T
 }
 
 type expenseController struct {
-	service expenseSevice.ExpenseService
+	service  expenseSevice.ExpenseService
+	datetime Datetime.Datetime
 }
 
 type FiberExpenseController interface {
@@ -43,4 +46,8 @@ type ExpenseResult struct {
 	TagId       string          `json:"tagId" `
 	UserOwner   string          `json:"userOwner" `
 	Value       decimal.Decimal `json:"value"`
+}
+type ExpenseSummaryResult struct {
+	TagId string          `json:"tagId" `
+	Value decimal.Decimal `json:"value"`
 }

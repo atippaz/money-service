@@ -31,3 +31,23 @@ func (s *incomeService) GetIncomesByUser(id uuid.UUID, startDate *time.Time, end
 	}
 	return &results, err
 }
+func (s *incomeService) GetSummary(id uuid.UUID, startDate *time.Time, endDate *time.Time) (*[]IncomeSummaryResult, error) {
+	res, err := s.repo.GetIncomesByUser(id, startDate, endDate)
+	resultMap := make(map[string]*IncomeSummaryResult)
+	for _, result := range *res {
+		if existing, ok := resultMap[result.TagId.String()]; ok {
+			existing.Value.Add(result.Value)
+		} else {
+			resultMap[result.TagId.String()] = &IncomeSummaryResult{
+				TagId: result.TagId,
+				Value: result.Value,
+			}
+		}
+	}
+
+	var groupedResults []IncomeSummaryResult
+	for _, result := range resultMap {
+		groupedResults = append(groupedResults, *result)
+	}
+	return &groupedResults, err
+}

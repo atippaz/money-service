@@ -12,6 +12,7 @@ import (
 type IncomeController[T any] interface {
 	CreateIncome() T
 	GetIncomesByUser() T
+	GetSummary() T
 }
 
 type incomeController struct {
@@ -29,4 +30,9 @@ type IncomeResult struct {
 	TagId       string          `json:"tagId" `
 	UserOwner   string          `json:"userOwner" `
 	Value       decimal.Decimal `json:"value"`
+}
+
+type IncomeSummaryResult struct {
+	TagId string          `json:"tagId" `
+	Value decimal.Decimal `json:"value"`
 }

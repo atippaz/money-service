@@ -11,6 +11,7 @@ import (
 type IncomeService interface {
 	CreateIncome(id uuid.UUID, payload IncomeInsert) (*uuid.UUID, error)
 	GetIncomesByUser(id uuid.UUID, startDate *time.Time, endDate *time.Time) (*[]IncomeResult, error)
+	GetSummary(id uuid.UUID, startDate *time.Time, endDate *time.Time) (*[]IncomeSummaryResult, error)
 }
 
 type incomeService struct {
@@ -23,7 +24,10 @@ type IncomeResult struct {
 	Value       decimal.Decimal
 	UserOwner   uuid.UUID
 }
-
+type IncomeSummaryResult struct {
+	TagId uuid.UUID
+	Value decimal.Decimal
+}
 type IncomeInsert struct {
 	TagId     uuid.UUID
 	Value     decimal.Decimal

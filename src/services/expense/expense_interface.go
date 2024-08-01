@@ -9,14 +9,18 @@ import (
 )
 
 type ExpenseService interface {
-	GetExpensesByUser(userId uuid.UUID) (*[]ExpenseResult, error)
+	GetExpensesByUser(userId uuid.UUID, startDate *time.Time, endDate *time.Time) (*[]ExpenseResult, error)
 	CreateExpense(userId uuid.UUID, payload ExpenseInsert) (*uuid.UUID, error)
+	GetSummary(id uuid.UUID, startDate *time.Time, endDate *time.Time) (*[]ExpenseSummaryResult, error)
 }
 
 type expenseService struct {
 	repo repositories.ExpenseRepository
 }
-
+type ExpenseSummaryResult struct {
+	TagId uuid.UUID
+	Value decimal.Decimal
+}
 type ExpenseResult struct {
 	ExpenseId   uuid.UUID
 	CreatedDate time.Time

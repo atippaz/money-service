@@ -12,6 +12,8 @@ func IncomeRoute(app fiber.Router, controllers controllers.FiberIncomeController
 	api.Use(jwtMiddleware.MiddleWare())
 	api.Get("/", controllers.GetIncomesByUser())
 	api.Post("/", controllers.CreateIncome())
+	api.Get("/summary", controllers.GetSummary())
+
 	// delete in 1 day
 	// update in 30 minute
 }

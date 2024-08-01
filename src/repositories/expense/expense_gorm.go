@@ -2,6 +2,7 @@ package repositories
 
 import (
 	"money-service/src/entities"
+	"time"
 
 	"github.com/google/uuid"
 	"gorm.io/gorm"
@@ -15,22 +16,35 @@ func NewGormExpenseRepository(db *gorm.DB) ExpenseRepository {
 	return &expenseRepositoryGorm{db: db}
 }
 
-func (r *expenseRepositoryGorm) GetExpensesByUser(userId uuid.UUID) (*[]ExpenseResultQuery, error) {
+func (r *expenseRepositoryGorm) GetExpensesByUser(userId uuid.UUID, startDate *time.Time, endDate *time.Time) (*[]ExpenseResultQuery, error) {
 	var results []entities.ExpensesEntity
 	db := r.db
+	query := db.Where("user_owner = ?", userId)
 
-	if err := db.Find(&results).Error; err != nil {
+	if startDate != nil {
+		query = query.Where("created_date >= ?", *startDate)
+	}
+
+	if endDate != nil {
+		query = query.Where("created_date <= ?", *endDate)
+	}
+	if err := query.Find(&results).Error; err != nil {
 		return nil, err
 	}
-	expenseResults := make([]ExpenseResultQuery, 0)
+	var incomesResults []ExpenseResultQuery
 	for _, result := range results {
-		expenseResults = append(expenseResults, ExpenseResultQuery{
-			ExpenseId: result.ExpenseId,
+		incomesResults = append(incomesResults, ExpenseResultQuery{
+			ExpenseId:   result.ExpenseId,
+			CreatedDate: result.CreatedDate,
+			TagId:       result.TagId,
+			Value:       result.Value,
+			UserOwner:   result.UserOwner,
 		})
 	}
 
-	return &expenseResults, nil
+	return &incomesResults, nil
 }
+
 func (r *expenseRepositoryGorm) CreateExpense(userId uuid.UUID, payload ExpenseInsertDb) (*uuid.UUID, error) {
 	db := r.db
 	newExpense := entities.ExpensesEntity{
