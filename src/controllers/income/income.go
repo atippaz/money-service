@@ -101,8 +101,9 @@ func (s incomeController) GetSummary() fiber.Handler {
 		results := []IncomeSummaryResult{}
 		for _, result := range *res {
 			results = append(results, IncomeSummaryResult{
-				TagId: result.TagId.String(),
-				Value: result.Value,
+				TagId:          result.TagId.String(),
+				Value:          result.Value,
+				SpendingTypeId: "",
 			})
 		}
 		return c.JSON(results)

@@ -49,6 +49,7 @@ type ExpenseResult struct {
 	Value       decimal.Decimal `json:"value"`
 }
 type ExpenseSummaryResult struct {
-	TagId string          `json:"tagId" `
-	Value decimal.Decimal `json:"value"`
+	TagId          string          `json:"tagId" `
+	Value          decimal.Decimal `json:"value"`
+	SpendingTypeId string          `json:"spendingTypeId"`
 }

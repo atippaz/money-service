@@ -58,3 +58,33 @@ func (r *incomeRepositoryGorm) GetIncomesByUser(userId uuid.UUID, startDate *tim
 
 	return &incomesResults, nil
 }
+
+func (r *incomeRepositoryGorm) GetSummary(userId uuid.UUID, startDate *time.Time, endDate *time.Time) (*[]IncomeResultQuery, error) {
+	var results []entities.IncomesEntity
+	r.GetIncomesByUser(userId, startDate, endDate)
+	db := r.db
+	query := db.Where("user_owner = ?", userId)
+
+	if startDate != nil {
+		query = query.Where("created_date >= ?", *startDate)
+	}
+
+	if endDate != nil {
+		query = query.Where("created_date <= ?", *endDate)
+	}
+	if err := query.Find(&results).Error; err != nil {
+		return nil, err
+	}
+	var incomesResults []IncomeResultQuery
+	for _, result := range results {
+		incomesResults = append(incomesResults, IncomeResultQuery{
+			IncomeId:    result.IncomeId,
+			CreatedDate: result.CreatedDate,
+			TagId:       result.TagId,
+			Value:       result.Value,
+			UserOwner:   result.UserOwner,
+		})
+	}
+
+	return &incomesResults, nil
+}

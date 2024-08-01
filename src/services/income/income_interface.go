@@ -25,8 +25,9 @@ type IncomeResult struct {
 	UserOwner   uuid.UUID
 }
 type IncomeSummaryResult struct {
-	TagId uuid.UUID
-	Value decimal.Decimal
+	TagId          uuid.UUID
+	Value          decimal.Decimal
+	SpendingTypeId string
 }
 type IncomeInsert struct {
 	TagId     uuid.UUID
