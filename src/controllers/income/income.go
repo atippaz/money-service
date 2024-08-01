@@ -16,16 +16,19 @@ func NewFiberIncomeController(service incomeService.IncomeService, datetime Date
 }
 func (s incomeController) CreateIncome() fiber.Handler {
 	return func(c *fiber.Ctx) error {
-		// //todo get uuid from user middleware
-		// //todo get payload form body
-		// payload := IncomeInsertDb{}
-		// id := uuid.New()
-		// res, err := s.service.CreateIncome(id, payload)
-		// if err != nil {
-		// 	return c.Status(fiber.StatusInternalServerError).SendString(err.Error())
-		// }
-		// return c.JSON(res)
-		return c.JSON("")
+		var payload IncomeInsertRequest
+		if err := c.BodyParser(&payload); err != nil {
+			return c.Status(400).JSON(fiber.Map{"error": err.Error()})
+		}
+		claims := c.Locals("user").(*jwtUtils.AuthClaims)
+		res, err := s.service.CreateIncome(claims.UserId, incomeService.IncomeInsert{
+			TagId: payload.TagId,
+			Value: payload.Value,
+		})
+		if err != nil {
+			return c.Status(fiber.StatusInternalServerError).SendString(err.Error())
+		}
+		return c.JSON(res)
 	}
 }
 func (s incomeController) GetIncomesByUser() fiber.Handler {

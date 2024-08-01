@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/gofiber/fiber/v2"
+	"github.com/google/uuid"
 	"github.com/shopspring/decimal"
 )
 
@@ -34,5 +35,9 @@ type IncomeResult struct {
 
 type IncomeSummaryResult struct {
 	TagId string          `json:"tagId" `
+	Value decimal.Decimal `json:"value"`
+}
+type IncomeInsertRequest struct {
+	TagId uuid.UUID       `json:"tagId"`
 	Value decimal.Decimal `json:"value"`
 }
