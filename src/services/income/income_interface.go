@@ -31,5 +31,6 @@ type IncomeSummaryResult struct {
 type IncomeInsert struct {
 	TagId     uuid.UUID
 	Value     decimal.Decimal
+	Date      time.Time
 	UserOwner uuid.UUID
 }

@@ -23,4 +23,5 @@ type ExpenseResultQuery struct {
 type ExpenseInsertDb struct {
 	TagId uuid.UUID
 	Value decimal.Decimal
+	Date  time.Time
 }

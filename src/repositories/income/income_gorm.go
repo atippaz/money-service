@@ -18,10 +18,11 @@ func NewGormIncomeRepository(db *gorm.DB) IncomeRepository {
 func (r *incomeRepositoryGorm) CreateIncome(userId uuid.UUID, payload IncomeInsertDb) (*uuid.UUID, error) {
 	db := r.db
 	newIncome := entities.IncomesEntity{
-		IncomeId:  uuid.New(),
-		TagId:     payload.TagId,
-		Value:     payload.Value,
-		UserOwner: userId,
+		IncomeId:    uuid.New(),
+		TagId:       payload.TagId,
+		Value:       payload.Value,
+		UserOwner:   userId,
+		CreatedDate: payload.Date,
 	}
 	if err := db.Create(&newIncome).Error; err != nil {
 		return nil, err

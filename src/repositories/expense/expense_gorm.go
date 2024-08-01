@@ -48,10 +48,11 @@ func (r *expenseRepositoryGorm) GetExpensesByUser(userId uuid.UUID, startDate *t
 func (r *expenseRepositoryGorm) CreateExpense(userId uuid.UUID, payload ExpenseInsertDb) (*uuid.UUID, error) {
 	db := r.db
 	newExpense := entities.ExpensesEntity{
-		ExpenseId: uuid.New(),
-		TagId:     payload.TagId,
-		Value:     payload.Value,
-		UserOwner: userId,
+		ExpenseId:   uuid.New(),
+		TagId:       payload.TagId,
+		Value:       payload.Value,
+		UserOwner:   userId,
+		CreatedDate: payload.Date,
 	}
 	if err := db.Create(&newExpense).Error; err != nil {
 		return nil, err

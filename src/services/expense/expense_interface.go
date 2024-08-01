@@ -31,4 +31,5 @@ type ExpenseResult struct {
 type ExpenseInsert struct {
 	TagId uuid.UUID
 	Value decimal.Decimal
+	Date  time.Time
 }

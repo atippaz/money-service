@@ -29,6 +29,7 @@ func (s *expenseService) CreateExpense(userId uuid.UUID, payload ExpenseInsert) 
 	res, err := s.repo.CreateExpense(userId, repositories.ExpenseInsertDb{
 		TagId: payload.TagId,
 		Value: payload.Value,
+		Date:  payload.Date,
 	})
 	return res, err
 }

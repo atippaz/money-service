@@ -23,4 +23,5 @@ type IncomeResultQuery struct {
 type IncomeInsertDb struct {
 	TagId uuid.UUID
 	Value decimal.Decimal
+	Date  time.Time
 }

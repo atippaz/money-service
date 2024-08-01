@@ -40,4 +40,5 @@ type IncomeSummaryResult struct {
 type IncomeInsertRequest struct {
 	TagId uuid.UUID       `json:"tagId"`
 	Value decimal.Decimal `json:"value"`
+	Date  string          `json:"date"`
 }

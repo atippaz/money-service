@@ -20,10 +20,12 @@ func (s incomeController) CreateIncome() fiber.Handler {
 		if err := c.BodyParser(&payload); err != nil {
 			return c.Status(400).JSON(fiber.Map{"error": err.Error()})
 		}
+		datetime, _ := s.datetime.ConvertToDate(payload.Date)
 		claims := c.Locals("user").(*jwtUtils.AuthClaims)
 		res, err := s.service.CreateIncome(claims.UserId, incomeService.IncomeInsert{
 			TagId: payload.TagId,
 			Value: payload.Value,
+			Date:  datetime,
 		})
 		if err != nil {
 			return c.Status(fiber.StatusInternalServerError).SendString(err.Error())

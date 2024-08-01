@@ -14,6 +14,7 @@ func (s *incomeService) CreateIncome(id uuid.UUID, payload IncomeInsert) (*uuid.
 	res, err := s.repo.CreateIncome(id, repositories.IncomeInsertDb{
 		TagId: payload.TagId,
 		Value: payload.Value,
+		Date:  payload.Date,
 	})
 	return res, err
 }

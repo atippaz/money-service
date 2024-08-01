@@ -27,6 +27,7 @@ type FiberExpenseController interface {
 type ExpenseInsertRequest struct {
 	TagId uuid.UUID       `json:"tagId"`
 	Value decimal.Decimal `json:"value"`
+	Date  string          `json:"date"`
 }
 type ExpenseResultQuery struct {
 	ExpenseId   uuid.UUID
