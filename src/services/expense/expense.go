@@ -38,7 +38,7 @@ func (s *expenseService) GetSummary(id uuid.UUID, startDate *time.Time, endDate 
 	resultMap := make(map[string]*ExpenseSummaryResult)
 	for _, result := range *res {
 		if existing, ok := resultMap[result.TagId.String()]; ok {
-			existing.Value.Add(result.Value)
+			existing.Value = existing.Value.Add(result.Value)
 		} else {
 			resultMap[result.TagId.String()] = &ExpenseSummaryResult{
 				TagId: result.TagId,
@@ -51,5 +51,6 @@ func (s *expenseService) GetSummary(id uuid.UUID, startDate *time.Time, endDate 
 	for _, result := range resultMap {
 		groupedResults = append(groupedResults, *result)
 	}
+
 	return &groupedResults, err
 }
