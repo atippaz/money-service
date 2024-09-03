@@ -34,10 +34,9 @@ func ConnectGormDb() *gorm.DB {
 	}
 
 	Database.AutoMigrate(&entities.SpendingTypeEntity{})
-	Database.AutoMigrate(&entities.CustomTagEntity{})
 	Database.AutoMigrate(&entities.ExpensesEntity{})
 	Database.AutoMigrate(&entities.IncomesEntity{})
-	Database.AutoMigrate(&entities.SystemTagEntity{})
+	Database.AutoMigrate(&entities.TagEntity{})
 	Database.AutoMigrate(&entities.UserEntity{})
 
 	return Database

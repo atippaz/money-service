@@ -1,17 +1,17 @@
 package routes
 
 import (
-	controllers "money-service/src/controllers/custom_tag"
+	controllers "money-service/src/controllers/tag"
 	"money-service/src/middlewares"
 
 	"github.com/gofiber/fiber/v2"
 )
 
-func CustomTagRoute(app fiber.Router, controllers controllers.FiberCustomTagController, jwtMiddleware middlewares.JWTMiddleware) {
-	api := app.Group("/custom-tags")
+func CustomTagRoute(app fiber.Router, controllers controllers.FiberTagController, jwtMiddleware middlewares.JWTMiddleware) {
+	api := app.Group("/tags")
 	api.Use(jwtMiddleware.MiddleWare())
-	api.Get("/", controllers.GetCustomTagsByUser())
-	api.Post("/", controllers.CreateCustomTag())
+	api.Get("/", controllers.GetTagsByUser())
+	api.Post("/", controllers.CreateTag())
 
 	// todo
 	// api.Patch("/:custom_tag_id")

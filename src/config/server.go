@@ -24,9 +24,12 @@ func GetInstanceServer() (fiber.Router, *Config) {
 		ExposeHeaders:    "Content-Length",
 		AllowCredentials: true,
 	}))
+	app.Get("/", func(c *fiber.Ctx) error {
+		return c.SendStatus(200)
+	})
 	api := app.Group(fmt.Sprintf("/api/%s", cfg.API_VERSION))
 	api.Get("/", func(c *fiber.Ctx) error {
-		return c.SendString("welcome to my api")
+		return c.Status(200).SendString("welcome to my api")
 	})
 
 	return api, cfg

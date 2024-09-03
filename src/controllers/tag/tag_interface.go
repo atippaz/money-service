@@ -1,20 +1,21 @@
 package controllers
 
 import (
-	SystemTagService "money-service/src/services/system_tag"
+	TagSevice "money-service/src/services/tag"
 
 	"github.com/gofiber/fiber/v2"
 )
 
-type SystemTagController[T any] interface {
-	GetAllSystemTags() T
+type TagController[T any] interface {
+	GetTagsByUser() T
+	CreateTag() T
 }
-type systemTagController struct {
-	service SystemTagService.SystemTagService
+type tagController struct {
+	service TagSevice.TagService
 }
 
-type FiberSystemTagController interface {
-	SystemTagController[fiber.Handler]
+type FiberTagController interface {
+	TagController[fiber.Handler]
 }
 
 type TagsResult struct {
@@ -23,4 +24,5 @@ type TagsResult struct {
 	NameTh         string `json:"nameTh" `
 	SpendingTypeId string `json:"spendingTypeId" `
 	TagId          string `json:"tagId" `
+	Owner          string `json:"owner" `
 }

@@ -1,41 +1,47 @@
 package controllers
 
 import (
-	customTagSevice "money-service/src/services/custom_tag"
+	TagSevice "money-service/src/services/tag"
 	jwtUtils "money-service/src/utils/jwt"
+	"strconv"
 
 	"github.com/gofiber/fiber/v2"
 )
 
-func NewFiberCustomTagController(service customTagSevice.CustomTagService) FiberCustomTagController {
-	return &customTagController{service}
+func NewFiberTagController(service TagSevice.TagService) FiberTagController {
+	return &tagController{service}
 }
-func (s customTagController) GetCustomTagsByUser() fiber.Handler {
+func (s tagController) GetTagsByUser() fiber.Handler {
 	return func(c *fiber.Ctx) error {
 		claims := c.Locals("user").(*jwtUtils.AuthClaims)
-		res, err := s.service.GetCustomTagsByUser(claims.UserId)
+		hasSystemStr := c.Query("hasSystem", "false")
+		hasSystem, err := strconv.ParseBool(hasSystemStr)
+		if err != nil {
+			return c.Status(fiber.StatusBadRequest).SendString("Invalid hasSystem parameter")
+		}
+		res, err := s.service.GetTagsByUser(claims.UserId, hasSystem)
 		if err != nil {
 			return c.Status(fiber.StatusInternalServerError).SendString(err.Error())
 		}
-		results := []CustomTagsResult{}
+		results := []TagsResult{}
 		for _, result := range *res {
-			results = append(results, CustomTagsResult{
+			results = append(results, TagsResult{
 				TagId:          result.TagId.String(),
 				NameTh:         result.NameTh,
 				NameEn:         result.NameEn,
 				IsActive:       result.IsActive,
 				SpendingTypeId: result.SpendingTypeId.String(),
-				UserOwner:      result.UserOwner.String(),
+				Owner:          result.Owner.String(),
 			})
 		}
 
 		return c.JSON(&results)
 	}
 }
-func (s customTagController) CreateCustomTag() fiber.Handler {
+func (s tagController) CreateTag() fiber.Handler {
 	return func(c *fiber.Ctx) error {
 		claims := c.Locals("user").(*jwtUtils.AuthClaims)
-		res, err := s.service.CreateCustomTag(claims.UserId)
+		res, err := s.service.CreateTag(claims.UserId)
 		if err != nil {
 			return c.Status(fiber.StatusInternalServerError).SendString(err.Error())
 		}
