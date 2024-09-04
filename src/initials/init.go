@@ -6,16 +6,21 @@ import (
 	expense_contoller "money-service/src/controllers/expense"
 	income_contoller "money-service/src/controllers/income"
 	line_contoller "money-service/src/controllers/line"
+	share_contoller "money-service/src/controllers/share"
 	spending_type_contoller "money-service/src/controllers/spending_type"
 	tag_contoller "money-service/src/controllers/tag"
 	user_contoller "money-service/src/controllers/user"
+	user_share_contoller "money-service/src/controllers/user_share"
+
 	"money-service/src/middlewares"
 
 	expense_repo "money-service/src/repositories/expense"
 	income_repo "money-service/src/repositories/income"
+	share_repo "money-service/src/repositories/share"
 	spending_type_repo "money-service/src/repositories/spending_type"
 	tag_repo "money-service/src/repositories/tag"
 	user_repo "money-service/src/repositories/user"
+	user_share_repo "money-service/src/repositories/user_share"
 
 	Datetime "money-service/src/utils/datetime"
 	hasher "money-service/src/utils/hasher"
@@ -27,9 +32,11 @@ import (
 	expense_service "money-service/src/services/expense"
 	income_service "money-service/src/services/income"
 	line_service "money-service/src/services/line"
+	share_service "money-service/src/services/share"
 	spending_type_service "money-service/src/services/spending_type"
 	tag_service "money-service/src/services/tag"
 	user_service "money-service/src/services/user"
+	user_share_service "money-service/src/services/user_share"
 
 	"github.com/go-playground/validator"
 	"github.com/gofiber/fiber/v2"
@@ -40,6 +47,8 @@ var expenseRepo expense_repo.ExpenseRepository
 var incomeRepo income_repo.IncomeRepository
 var tagRepo tag_repo.TagRepository
 var userRepo user_repo.UserRepository
+var shareRepo share_repo.ShareRepository
+var userShareRepo user_share_repo.UserShareRepository
 
 var spendingService spending_type_service.SpendingTypeService
 var expenseService expense_service.ExpenseService
@@ -48,12 +57,17 @@ var tagService tag_service.TagService
 var userService user_service.UserService
 var authService auth_service.AuthService
 var lineService line_service.LineService
+var shareService share_service.ShareService
+var userShareService user_share_service.UserShareService
 
 var expenseController expense_contoller.FiberExpenseController
 var incomeController income_contoller.FiberIncomeController
 var spendingTypeController spending_type_contoller.FiberSpendingTypeController
 var tagController tag_contoller.FiberTagController
 var userController user_contoller.FiberUserController
+var userShareController user_share_contoller.FiberUserShareController
+var shareController share_contoller.FiberShareController
+
 var authController auth_contoller.FiberAuthController
 var lineController line_contoller.FiberLineTypeController
 
@@ -77,10 +91,15 @@ func initServices() {
 	userService = user_service.NewUserService(userRepo, encodeUtils)
 	authService = auth_service.NewAuthService(userService, encodeUtils, jwtUtils)
 	lineService = line_service.NewLineService(authService, userService, expenseService, tagService)
+	shareService = share_service.NewShareService(shareRepo)
+	userShareService = user_share_service.NewUserShareService(userShareRepo)
 }
 
 func initContollers() {
 	userController = user_contoller.NewFiberUserController(userService)
+	userShareController = user_share_contoller.NewFiberUserShareController(userShareService)
+	shareController = share_contoller.NewFiberShareController(shareService)
+
 	expenseController = expense_contoller.NewFiberExpenseController(expenseService, datetime)
 	incomeController = income_contoller.NewFiberIncomeController(incomeService, datetime)
 
@@ -102,6 +121,8 @@ func initRoutes(app fiber.Router) {
 	routes.UserRoute(app, userController, middleWareJwt)
 	routes.AuthRoute(app, authController)
 	routes.LineRoute(app, lineController)
+	routes.ShareRoute(app, shareController, middleWareJwt)
+	routes.UserShareRoute(app, userShareController, middleWareJwt)
 
 }
 

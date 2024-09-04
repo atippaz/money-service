@@ -38,6 +38,8 @@ func ConnectGormDb() *gorm.DB {
 	Database.AutoMigrate(&entities.IncomesEntity{})
 	Database.AutoMigrate(&entities.TagEntity{})
 	Database.AutoMigrate(&entities.UserEntity{})
+	Database.AutoMigrate(&entities.ShareEntity{})
+	Database.AutoMigrate(&entities.UserShareEntity{})
 
 	return Database
 }

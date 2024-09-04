@@ -33,7 +33,7 @@ func (r *tagRepositoryGorm) GetTags(userId *uuid.UUID, hasSystem bool) (*[]TagRe
 	var results []entities.TagEntity
 	db := r.db
 
-	if err := db.Where("is_active = ? AND user_owner = ?", hasSystem, userId).Find(&results).Error; err != nil {
+	if err := db.Where("is_active = ? and owner = ?", hasSystem, userId).Find(&results).Error; err != nil {
 		return nil, err
 	}
 	if userId == nil {
@@ -41,7 +41,7 @@ func (r *tagRepositoryGorm) GetTags(userId *uuid.UUID, hasSystem bool) (*[]TagRe
 			return nil, err
 		}
 	} else {
-		if err := r.db.Where("is_active = ? ANF owner = ?", hasSystem, *userId).Find(&results).Error; err != nil {
+		if err := r.db.Where("is_active = ? AND owner = ?", hasSystem, *userId).Find(&results).Error; err != nil {
 			return nil, err
 		}
 	}
