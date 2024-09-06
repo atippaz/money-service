@@ -7,7 +7,7 @@ import (
 )
 
 type ShareService interface {
-	Insert(userOwner uuid.UUID, payload share_repo.ShareInsertDB) (*[]share_repo.ShareResultQuery, error)
+	Insert(userOwner uuid.UUID, payload share_repo.ShareInsertDB) (*uuid.UUID, error)
 	GetAll(userId *uuid.UUID) (*[]share_repo.ShareResultQuery, error)
 	GetById(shareId *uuid.UUID) (*[]share_repo.ShareResultQuery, error)
 }

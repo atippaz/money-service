@@ -19,39 +19,29 @@ func (r *userShareRepositoryGorm) GetAll(shareId *uuid.UUID) (*[]UserShareResult
 	var results []entities.UserShareEntity
 	db := r.db
 
-	if err := db.Select("spending_type_id, name_th, name_en").Find(&results).Error; err != nil {
+	if err := db.Select("user_share_id, user_id, share_id").Find(&results).Error; err != nil {
 		return nil, err
 	}
-	// var UserShareResults []UserShareResultQuery
-	// for _, result := range results {
-	// 	UserShareResults = append(UserShareResults, UserShareResultQuery{
-	// 		UserShareId: result.UserShareId,
-	// 		NameTh:      result.NameTh,
-	// 		NameEn:      result.NameEn,
-	// 	})
-	// }
+	var UserShareResults []UserShareResultQuery
+	for _, result := range results {
+		UserShareResults = append(UserShareResults, UserShareResultQuery{
+			UserShareId: result.UserShareId,
+			UserId:      result.UserId,
+			ShareId:     result.ShareId,
+		})
+	}
 
-	// return &UserShareResults, nil
-	return nil, nil
+	return &UserShareResults, nil
 
 }
-func (r *userShareRepositoryGorm) Insert(userOwner uuid.UUID, payload UserShareInsertDB) (*[]UserShareResultQuery, error) {
-	var results []entities.UserShareEntity
+func (r *userShareRepositoryGorm) Insert(userOwner uuid.UUID, payload UserShareInsertDB) (*uuid.UUID, error) {
 	db := r.db
-
-	if err := db.Select("spending_type_id, name_th, name_en").Find(&results).Error; err != nil {
+	newTag := entities.UserShareEntity{
+		UserId:  payload.UserId,
+		ShareId: userOwner,
+	}
+	if err := db.Create(&newTag).Error; err != nil {
 		return nil, err
 	}
-	// var UserShareResults []UserShareResultQuery
-	// for _, result := range results {
-	// 	UserShareResults = append(UserShareResults, UserShareResultQuery{
-	// 		UserShareId: result.UserShareId,
-	// 		NameTh:      result.NameTh,
-	// 		NameEn:      result.NameEn,
-	// 	})
-	// }
-
-	// return &UserShareResults, nil
-	return nil, nil
-
+	return &newTag.UserShareId, nil
 }

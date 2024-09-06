@@ -2,8 +2,10 @@ package controllers
 
 import (
 	share "money-service/src/services/share"
+	"time"
 
 	"github.com/gofiber/fiber/v2"
+	"github.com/google/uuid"
 )
 
 type ShareController[T any] interface {
@@ -21,7 +23,15 @@ type FiberShareController interface {
 }
 
 type ShareResult struct {
-	NameEn      string `json:"nameEn" `
-	NameTh      string `json:"nameTh" `
-	ShareTypeId string `json:"ShareTypeId" `
+	ShareId     uuid.UUID `json:"shareId" `
+	StartDate   time.Time `json:"startDate" `
+	EndDate     time.Time `json:"endDate" `
+	ExpiredDate time.Time `json:"expiredDate" `
+	UserShareId uuid.UUID `json:"userShareId" `
+}
+
+type ShareRequest struct {
+	StartDate   time.Time `json:"startDate" `
+	EndDate     time.Time `json:"endDate" `
+	ExpiredDate time.Time `json:"expiredDate" `
 }

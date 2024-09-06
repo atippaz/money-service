@@ -19,58 +19,54 @@ func (r *shareRepositoryGorm) GetAll(userId *uuid.UUID) (*[]ShareResultQuery, er
 	var results []entities.ShareEntity
 	db := r.db
 
-	if err := db.Select("spending_type_id, name_th, name_en").Find(&results).Error; err != nil {
+	if err := db.Select("share_id, start_date, end_date,expired_date,user_share_id").Find(&results).Error; err != nil {
 		return nil, err
 	}
-	// var ShareResults []ShareResultQuery
-	// for _, result := range results {
-	// 	ShareResults = append(ShareResults, ShareResultQuery{
-	// 		ShareId: result.ShareId,
-	// 		NameTh:  result.NameTh,
-	// 		NameEn:  result.NameEn,
-	// 	})
-	// }
+	var ShareResults []ShareResultQuery
+	for _, result := range results {
+		ShareResults = append(ShareResults, ShareResultQuery{
+			ShareId:     result.ShareId,
+			StartDate:   result.StartDate,
+			EndDate:     result.EndDate,
+			ExpiredDate: result.ExpiredDate,
+			UserShareId: result.UserShareId,
+		})
+	}
 
-	// return &ShareResults, nil
-	return nil, nil
+	return &ShareResults, nil
 }
-func (r *shareRepositoryGorm) Insert(userOwner uuid.UUID, payload ShareInsertDB) (*[]ShareResultQuery, error) {
-	var results []entities.ShareEntity
+func (r *shareRepositoryGorm) Insert(userOwner uuid.UUID, payload ShareInsertDB) (*uuid.UUID, error) {
 	db := r.db
-
-	if err := db.Select("spending_type_id, name_th, name_en").Find(&results).Error; err != nil {
+	newTag := entities.ShareEntity{
+		StartDate:   payload.StartDate,
+		EndDate:     payload.EndDate,
+		ExpiredDate: payload.ExpiredDate,
+		UserShareId: userOwner,
+	}
+	if err := db.Create(&newTag).Error; err != nil {
 		return nil, err
 	}
-	// var ShareResults []ShareResultQuery
-	// for _, result := range results {
-	// 	ShareResults = append(ShareResults, ShareResultQuery{
-	// 		ShareId: result.ShareId,
-	// 		NameTh:  result.NameTh,
-	// 		NameEn:  result.NameEn,
-	// 	})
-	// }
-
-	// return &ShareResults, nil
-	return nil, nil
+	return &newTag.ShareId, nil
 
 }
 func (r *shareRepositoryGorm) GetById(shareId *uuid.UUID) (*[]ShareResultQuery, error) {
 	var results []entities.ShareEntity
 	db := r.db
 
-	if err := db.Select("spending_type_id, name_th, name_en").Find(&results).Error; err != nil {
+	if err := db.Select("share_id, start_date, end_date,expired_date,user_share_id").Find(&results).Error; err != nil {
 		return nil, err
 	}
-	// var ShareResults []ShareResultQuery
-	// for _, result := range results {
-	// 	ShareResults = append(ShareResults, ShareResultQuery{
-	// 		ShareId: result.ShareId,
-	// 		NameTh:  result.NameTh,
-	// 		NameEn:  result.NameEn,
-	// 	})
-	// }
+	var ShareResults []ShareResultQuery
+	for _, result := range results {
+		ShareResults = append(ShareResults, ShareResultQuery{
+			ShareId:     result.ShareId,
+			StartDate:   result.StartDate,
+			EndDate:     result.EndDate,
+			ExpiredDate: result.ExpiredDate,
+			UserShareId: result.UserShareId,
+		})
+	}
 
-	// return &ShareResults, nil
-	return nil, nil
+	return &ShareResults, nil
 
 }

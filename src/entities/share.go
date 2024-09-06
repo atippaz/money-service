@@ -11,7 +11,7 @@ type ShareEntity struct {
 	StartDate   time.Time `gorm:"column:start_date;"`
 	EndDate     time.Time `gorm:"column:end_date;"`
 	ExpiredDate time.Time `gorm:"column:expired_date;"`
-	UserShareId string    `gorm:"column:user_share_id;"`
+	UserShareId uuid.UUID `gorm:"column:user_share_id;"`
 }
 
 func (ShareEntity) TableName() string {

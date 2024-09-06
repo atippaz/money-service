@@ -7,7 +7,7 @@ import (
 )
 
 type UserShareService interface {
-	Insert(userOwner uuid.UUID, payload user_share_repo.UserShareInsertDB) (*[]user_share_repo.UserShareResultQuery, error)
+	Insert(userOwner uuid.UUID, payload user_share_repo.UserShareInsertDB) (*uuid.UUID, error)
 	GetAll(userId *uuid.UUID) (*[]user_share_repo.UserShareResultQuery, error)
 }
 type userShareService struct {

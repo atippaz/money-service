@@ -3,17 +3,15 @@ package repositories
 import "github.com/google/uuid"
 
 type UserShareRepository interface {
-	Insert(userOwner uuid.UUID, payload UserShareInsertDB) (*[]UserShareResultQuery, error)
+	Insert(userOwner uuid.UUID, payload UserShareInsertDB) (*uuid.UUID, error)
 	GetAll(userId *uuid.UUID) (*[]UserShareResultQuery, error)
 }
 type UserShareResultQuery struct {
-	SpendingTypeId uuid.UUID
-	NameTh         string
-	NameEn         string
+	UserShareId uuid.UUID
+	UserId      uuid.UUID
+	ShareId     uuid.UUID
 }
 
 type UserShareInsertDB struct {
-	NameTh         string
-	NameEn         string
-	SpendingTypeId uuid.UUID
+	UserId uuid.UUID
 }
